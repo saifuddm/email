@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,458 +11,429 @@
         document.documentElement.classList.add('dark');
     })();
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            cf: { DEFAULT: '#f6821f', dark: '#e56f00', light: '#fff7ed' },
-            aws: { DEFAULT: '#ff9900', dark: '#ec7211', light: '#fffbeb' },
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    details > summary { list-style: none; cursor: pointer; }
-    details > summary::-webkit-details-marker { display: none; }
-    details[open] > summary .chevron { transform: rotate(90deg); }
-    .nav-link.active { background: rgb(241 245 249); border-left-color: rgb(51 65 85); font-weight: 600; }
-    @media (max-width: 1023px) {
-      #sidebar.open { transform: translateX(0); }
-    }
-    .dark { color-scheme: dark; }
-    .dark body { background-color: #020617; color: #e2e8f0; }
-    .dark #sidebar, .dark .bg-white { background-color: #0f172a !important; }
-    .dark .border-slate-200, .dark .border-slate-100 { border-color: #334155 !important; }
-    .dark .bg-slate-50 { background-color: #020617 !important; }
-    .dark .bg-slate-100, .dark .bg-slate-200 { background-color: #1e293b !important; }
-    .dark .text-slate-900 { color: #f1f5f9 !important; }
-    .dark .text-slate-800, .dark .text-slate-700 { color: #e2e8f0 !important; }
-    .dark .text-slate-600 { color: #cbd5e1 !important; }
-    .dark .text-slate-500, .dark .text-slate-400 { color: #94a3b8 !important; }
-    .dark .hover\:bg-slate-50:hover { background-color: #1e293b !important; }
-    .dark .nav-link.active { background: #1e293b !important; border-left-color: #94a3b8 !important; color: #f1f5f9; }
-    .dark .bg-cf-light, .dark .bg-orange-50 { background-color: #431407 !important; }
-    .dark .bg-aws-light, .dark .bg-amber-50 { background-color: #451a03 !important; }
-    .dark .text-cf-dark { color: #fdba74 !important; }
-    .dark .text-aws-dark { color: #fcd34d !important; }
-    .dark .bg-emerald-50 { background-color: #022c22 !important; }
-    .dark .text-emerald-800 { color: #6ee7b7 !important; }
-    .dark .bg-indigo-50 { background-color: #1e1b4b !important; border-color: #3730a3 !important; }
-    .dark .text-indigo-900 { color: #c7d2fe !important; }
-    .dark .bg-amber-50.border-amber-200 { background-color: #451a03 !important; border-color: #92400e !important; }
-    .dark .text-amber-900 { color: #fde68a !important; }
-    .dark .bg-amber-100 { background-color: #78350f !important; }
-    .dark #toolbar-bar { background-color: rgba(2, 6, 23, 0.95) !important; border-color: #334155 !important; }
-    .dark #menu-toggle, .dark .toolbar-btn, .dark #track-filter {
-      background-color: #1e293b !important; color: #e2e8f0 !important; border-color: #475569 !important;
-    }
-    .dark .question-group { background-color: #0f172a !important; border-color: #334155 !important; }
-    .dark code { background-color: #1e293b !important; color: #e2e8f0 !important; }
-    .dark input[type=checkbox] { background-color: #1e293b; border-color: #475569; }
-    .dark .divide-slate-50 > :not([hidden]) ~ :not([hidden]),
-    .dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #334155; }
-  </style>
+  <link rel="stylesheet" href="assets/lab.css" />
+  <style>.hidden { display: none !important; }</style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased transition-colors duration-200">
+<body>
+  <div class="grain"></div>
+  <div class="mesh-bg"></div>
 
-  <!-- Mobile menu -->
-  <button id="menu-toggle" class="lg:hidden fixed top-4 left-4 z-50 bg-white border border-slate-200 rounded-lg p-2 shadow-sm" aria-label="Toggle menu">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-  </button>
-  <button id="theme-toggle-mobile" type="button" class="theme-toggle lg:hidden fixed top-4 right-4 z-50 bg-white border border-slate-200 rounded-lg p-2 shadow-sm" aria-label="Toggle dark mode">
-    <svg class="icon-sun w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-    <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-  </button>
+  <div class="mobile-bar">
+    <button id="menu-toggle" class="icon-btn" aria-label="Toggle menu">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <button type="button" class="theme-toggle icon-btn" aria-label="Toggle dark mode">
+      <svg class="icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+    </button>
+  </div>
 
-  <div class="flex min-h-screen">
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 w-72 h-screen bg-white border-r border-slate-200 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
-      <div class="p-5 border-b border-slate-100">
-        <h1 class="text-lg font-bold text-slate-900">Email Learning Lab</h1>
-        <p class="text-xs text-slate-500 mt-1">Study plan · answer questions in Obsidian</p>
-        <div class="mt-3">
-          <div class="flex justify-between text-xs text-slate-500 mb-1">
-            <span>Progress</span>
-            <span id="progress-text">0%</span>
-          </div>
-          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
-            <div id="progress-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width:0%"></div>
-          </div>
+  <div class="app">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-head">
+        <p class="sidebar-kicker">RFC · Route · Rebuild</p>
+        <h1 class="sidebar-title">Email Learning Lab</h1>
+        <p class="sidebar-sub">Study plan · answer questions in Obsidian</p>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Progress</span><span id="progress-text">0%</span></div>
+          <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
         </div>
-        <button id="theme-toggle" type="button" class="theme-toggle mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Toggle dark mode">
-          <svg class="icon-sun w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg class="icon-moon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <button id="theme-toggle" type="button" class="theme-toggle theme-btn" aria-label="Toggle dark mode">
+          <svg class="icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <span class="theme-label">Dark mode</span>
         </button>
       </div>
-      <nav class="p-3 space-y-1 text-sm">
-        <a href="#overview" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Overview</a>
-        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-cf-dark uppercase tracking-wide">Track 1 · Cloudflare</p>
-        <a href="#cf-phases" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Phases</a>
-        <a href="#cf-01" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">01 Setup</a>
-        <a href="#cf-02" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">02 Inbound</a>
-        <a href="#cf-03" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">03 Storage</a>
-        <a href="#cf-04" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">04 MIME</a>
-        <a href="#cf-05" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">05 Outbound</a>
-        <a href="#cf-06" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">06 UI & API</a>
-        <a href="#cf-07" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">07 Access</a>
-        <a href="#cf-08" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">08 AI (opt)</a>
-        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-aws-dark uppercase tracking-wide">Track 2 · AWS</p>
-        <a href="#aws-phases" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Phases</a>
-        <a href="#aws-01" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">01 SES DNS</a>
-        <a href="#aws-02" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">02 Receipt</a>
-        <a href="#aws-03" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">03 Lambda</a>
-        <a href="#aws-04" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">04 Attachments</a>
-        <a href="#aws-05" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">05 Send</a>
-        <a href="#aws-06" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">06 UI</a>
-        <a href="#aws-07" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">07 Bounces</a>
-        <a href="#aws-08" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">08 Auth</a>
-        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-indigo-500 uppercase tracking-wide">Advanced</p>
-        <a href="advanced.html" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-indigo-700">Advanced topics →</a>
-        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wide">Reference</p>
-        <a href="#compare" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Compare CF vs AWS</a>
-        <a href="#references" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">External repos</a>
-        <a href="#resources" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Resources</a>
+      <nav class="sidebar-nav">
+        <a href="#overview" class="nav-link">Overview</a>
+        <p class="nav-group-label cf">Track 1 · Cloudflare</p>
+        <a href="#cf-phases" class="nav-link">Phases</a>
+        <a href="#cf-01" class="nav-link indent">01 Setup</a>
+        <a href="#cf-02" class="nav-link indent">02 Inbound</a>
+        <a href="#cf-03" class="nav-link indent">03 Storage</a>
+        <a href="#cf-04" class="nav-link indent">04 MIME</a>
+        <a href="#cf-05" class="nav-link indent">05 Outbound</a>
+        <a href="#cf-06" class="nav-link indent">06 UI &amp; API</a>
+        <a href="#cf-07" class="nav-link indent">07 Access</a>
+        <a href="#cf-08" class="nav-link indent">08 AI (opt)</a>
+        <p class="nav-group-label aws">Track 2 · AWS</p>
+        <a href="#aws-phases" class="nav-link">Phases</a>
+        <a href="#aws-01" class="nav-link indent">01 SES DNS</a>
+        <a href="#aws-02" class="nav-link indent">02 Receipt</a>
+        <a href="#aws-03" class="nav-link indent">03 Lambda</a>
+        <a href="#aws-04" class="nav-link indent">04 Attachments</a>
+        <a href="#aws-05" class="nav-link indent">05 Send</a>
+        <a href="#aws-06" class="nav-link indent">06 UI</a>
+        <a href="#aws-07" class="nav-link indent">07 Bounces</a>
+        <a href="#aws-08" class="nav-link indent">08 Auth</a>
+        <p class="nav-group-label adv">Advanced</p>
+        <a href="advanced.html" class="nav-link">Advanced topics →</a>
+        <p class="nav-group-label ref">Reference</p>
+        <a href="#compare" class="nav-link">Compare CF vs AWS</a>
+        <a href="#references" class="nav-link">External repos</a>
+        <a href="#resources" class="nav-link">Resources</a>
       </nav>
     </aside>
 
-    <!-- Main -->
-    <main class="flex-1 lg:ml-0 p-6 lg:p-10 max-w-5xl mx-auto w-full pt-16 lg:pt-10">
-
-      <!-- Toolbar -->
-      <div id="toolbar-bar" class="flex flex-wrap gap-2 mb-8 sticky top-0 z-30 bg-slate-50/95 backdrop-blur py-3 -mx-2 px-2 border-b border-slate-200 lg:border-0 lg:static lg:bg-transparent lg:py-0 lg:mb-8">
-        <button onclick="expandAll(true)" class="toolbar-btn px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg hover:bg-slate-50">Expand all</button>
-        <button onclick="expandAll(false)" class="toolbar-btn px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg hover:bg-slate-50">Collapse all</button>
-        <select id="track-filter" class="px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg">
+    <main class="main">
+      <div class="toolbar">
+        <button onclick="LabCore.expandAll(true)" class="toolbar-btn">Expand all</button>
+        <button onclick="LabCore.expandAll(false)" class="toolbar-btn">Collapse all</button>
+        <select id="track-filter" class="toolbar-select">
           <option value="all">Show all tracks</option>
           <option value="cf">Cloudflare only</option>
           <option value="aws">AWS only</option>
         </select>
       </div>
 
-      <!-- OVERVIEW -->
-      <section id="overview" class="mb-16 scroll-mt-8">
-        <div class="mb-6">
-          <span class="inline-block px-2 py-0.5 text-xs font-medium bg-slate-200 text-slate-700 rounded">Start here</span>
-          <h2 class="text-3xl font-bold text-slate-900 mt-2">Study plan overview</h2>
-          <p class="text-slate-600 mt-2 max-w-2xl">Two parallel tracks. Complete <strong>Track 1 (Cloudflare)</strong> before Track 2. Both target the same v1 feature set.</p>
+      <section id="overview" class="scroll-section page-hero">
+        <span class="badge">Start here</span>
+        <h2>Study plan overview</h2>
+        <p>Two parallel tracks. Complete <strong>Track 1 (Cloudflare)</strong> before Track 2. Both target the same v1 feature set.</p>
+
+        <div class="route-diagram" aria-hidden="true">
+          <svg viewBox="0 0 480 88" xmlns="http://www.w3.org/2000/svg">
+            <path class="route-line" d="M60 44 H140"/>
+            <path class="route-line active" d="M180 44 H260"/>
+            <path class="route-line" d="M300 44 H380"/>
+            <rect class="route-node" x="20" y="28" width="80" height="32" rx="6"/>
+            <text class="route-text" x="60" y="48">MTA</text>
+            <rect class="route-node cf" x="140" y="28" width="80" height="32" rx="6"/>
+            <text class="route-text" x="180" y="48">Worker</text>
+            <rect class="route-node cf" x="260" y="28" width="80" height="32" rx="6"/>
+            <text class="route-text" x="300" y="48">DO / R2</text>
+            <rect class="route-node" x="380" y="28" width="80" height="32" rx="6"/>
+            <text class="route-text" x="420" y="48">UI</text>
+          </svg>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-4 mb-8">
-          <div class="bg-cf-light border border-cf/30 rounded-xl p-5">
-            <h3 class="font-semibold text-cf-dark">Track 1 · Cloudflare</h3>
-            <p class="text-sm text-slate-600 mt-1">Study <a href="https://github.com/cloudflare/agentic-inbox" class="text-cf-dark underline">agentic-inbox</a>, then build a minimal clone.</p>
-            <p class="text-xs text-slate-500 mt-2 font-mono">cloudflare/agentic-inbox/</p>
+        <div class="card-grid stagger">
+          <div class="card cf">
+            <div class="card-body">
+              <h3>Track 1 · Cloudflare</h3>
+              <p>Study <a href="https://github.com/cloudflare/agentic-inbox">agentic-inbox</a>, then build a minimal clone.</p>
+              <p style="margin-top:0.5rem"><code>cloudflare/agentic-inbox/</code></p>
+            </div>
           </div>
-          <div class="bg-aws-light border border-aws/30 rounded-xl p-5">
-            <h3 class="font-semibold text-aws-dark">Track 2 · AWS SES</h3>
-            <p class="text-sm text-slate-600 mt-1">Port the same v1 to SES, S3, Lambda, DynamoDB.</p>
-            <p class="text-xs text-slate-500 mt-2 font-mono">aws/inbox/</p>
+          <div class="card aws">
+            <div class="card-body">
+              <h3>Track 2 · AWS SES</h3>
+              <p>Port the same v1 to SES, S3, Lambda, DynamoDB.</p>
+              <p style="margin-top:0.5rem"><code>aws/inbox/</code></p>
+            </div>
           </div>
         </div>
 
-        <!-- v1 checklist -->
-        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-8">
-          <h3 class="text-lg font-semibold mb-1">v1 feature checklist</h3>
-          <p class="text-sm text-slate-500 mb-4">Definition of done for both tracks. Checkboxes save in your browser.</p>
-          <ul class="space-y-2" data-checklist="v1">
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-receive" /> Receive mail at <code class="text-xs bg-slate-100 px-1 rounded">you@yourdomain.com</code></label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-list" /> List inbox (subject, from, date, read/unread)</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-read" /> Read message (plain text + sanitized HTML)</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-send" /> Send a new message</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-reply" /> Reply with correct threading (Gmail one thread)</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-attach" /> Download attachment both directions</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-archive" /> Archive or delete a message</label></li>
-            <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="v1-search" /> Search by keyword in subject or body</label></li>
-          </ul>
-          <p class="text-xs text-slate-400 mt-4 border-t border-slate-100 pt-3"><strong>Out of scope v1:</strong> AI agent, MCP, multi-user, IMAP/SMTP, calendar/contacts — see the <a href="advanced.html" class="text-indigo-600 underline">advanced study guide</a> for these topics.</p>
-        </div>
-
-        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5 mb-8">
-          <h3 class="font-semibold text-indigo-900">Ready for more?</h3>
-          <p class="text-sm text-slate-600 mt-1">Once v1 is working, continue with AI agents, MCP, multi-user auth, IMAP, deliverability, queues, and other topics excluded from the v1 checklist.</p>
-          <a href="advanced.html" class="inline-block mt-3 px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Open advanced study guide →</a>
-        </div>
-
-        <!-- Weekly rhythm -->
-        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-8">
-          <div class="px-6 py-4 bg-slate-50 border-b border-slate-200">
-            <h3 class="font-semibold">Suggested weekly rhythm</h3>
+        <div class="card" style="margin-bottom:2rem">
+          <div class="card-body">
+            <h3 style="font-size:1.15rem;margin-bottom:0.25rem">v1 feature checklist</h3>
+            <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:1rem">Definition of done for both tracks. Checkboxes save in your browser.</p>
+            <ul class="checklist" data-checklist="v1">
+              <li><label><input type="checkbox" class="check-item" data-id="v1-receive" /> Receive mail at <code>you@yourdomain.com</code></label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-list" /> List inbox (subject, from, date, read/unread)</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-read" /> Read message (plain text + sanitized HTML)</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-send" /> Send a new message</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-reply" /> Reply with correct threading (Gmail one thread)</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-attach" /> Download attachment both directions</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-archive" /> Archive or delete a message</label></li>
+              <li><label><input type="checkbox" class="check-item" data-id="v1-search" /> Search by keyword in subject or body</label></li>
+            </ul>
+            <p class="note-foot"><strong>Out of scope v1:</strong> AI agent, MCP, multi-user, IMAP/SMTP, calendar/contacts — see the <a href="advanced.html">advanced study guide</a>.</p>
           </div>
-          <table class="w-full text-sm">
-            <thead><tr class="border-b border-slate-100"><th class="text-left px-6 py-3 font-medium text-slate-500">Day</th><th class="text-left px-6 py-3 font-medium text-slate-500">Activity</th></tr></thead>
-            <tbody class="divide-y divide-slate-100">
-              <tr><td class="px-6 py-3 font-medium">Mon</td><td class="px-6 py-3 text-slate-600">Read docs + answer study questions in Obsidian</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Tue–Wed</td><td class="px-6 py-3 text-slate-600">Hands-on: deploy or code milestone</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Thu</td><td class="px-6 py-3 text-slate-600">Trace one code path; update comparison notes</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Fri</td><td class="px-6 py-3 text-slate-600">Send real test emails; document gotchas</td></tr>
-            </tbody>
-          </table>
         </div>
 
-        <!-- Progress log -->
-        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-          <h3 class="font-semibold mb-4">Progress log</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead><tr class="border-b border-slate-200"><th class="text-left py-2 pr-4 font-medium text-slate-500">Date</th><th class="text-left py-2 pr-4 font-medium text-slate-500">Milestone</th><th class="text-left py-2 pr-4 font-medium text-slate-500">Track</th><th class="text-left py-2 font-medium text-slate-500">Done</th></tr></thead>
-              <tbody class="divide-y divide-slate-100" data-checklist="progress">
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">Deploy agentic-inbox</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-cf-light text-cf-dark text-xs rounded">CF</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-cf-deploy" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">Trace inbound path</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-cf-light text-cf-dark text-xs rounded">CF</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-cf-inbound" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">Trace outbound path</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-cf-light text-cf-dark text-xs rounded">CF</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-cf-outbound" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">Minimal clone v1</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-cf-light text-cf-dark text-xs rounded">CF</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-cf-clone" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">SES domain verified</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-aws-light text-aws-dark text-xs rounded">AWS</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-aws-domain" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">Inbound S3 + Lambda</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-aws-light text-aws-dark text-xs rounded">AWS</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-aws-inbound" /></td></tr>
-                <tr><td class="py-2 pr-4 text-slate-400">—</td><td class="py-2 pr-4">AWS v1 complete</td><td class="py-2 pr-4"><span class="px-2 py-0.5 bg-aws-light text-aws-dark text-xs rounded">AWS</span></td><td class="py-2"><input type="checkbox" class="check-item rounded" data-id="prog-aws-v1" /></td></tr>
+        <div class="cta-block">
+          <h3>Ready for more?</h3>
+          <p style="font-size:0.9rem;color:var(--ink-muted);margin:0">Once v1 is working, continue with AI agents, MCP, multi-user auth, IMAP, deliverability, queues, and other topics excluded from the v1 checklist.</p>
+          <a href="advanced.html" class="cta-btn">Open advanced study guide →</a>
+        </div>
+
+        <div class="card" style="margin-bottom:2rem">
+          <div class="table-head">Suggested weekly rhythm</div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Day</th><th>Activity</th></tr></thead>
+              <tbody>
+                <tr><td>Mon</td><td>Read docs + answer study questions in Obsidian</td></tr>
+                <tr><td>Tue–Wed</td><td>Hands-on: deploy or code milestone</td></tr>
+                <tr><td>Thu</td><td>Trace one code path; update comparison notes</td></tr>
+                <tr><td>Fri</td><td>Send real test emails; document gotchas</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="text-xs text-slate-400 mt-3">Log dates in Obsidian; use checkboxes here for quick status.</p>
         </div>
-      </section>
 
-      <!-- TRACK 1 PHASES -->
-      <section id="cf-phases" class="track-cf mb-16 scroll-mt-8" data-track="cf">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="w-3 h-3 rounded-full bg-cf"></span>
-          <h2 class="text-2xl font-bold">Track 1 — Cloudflare phases</h2>
-        </div>
-        <p class="text-slate-600 mb-6">Goal: understand agentic-inbox, then rebuild a stripped-down version.</p>
-
-        <!-- Phase cards -->
-        <div class="space-y-4">
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" open>
-            <summary class="px-6 py-4 flex items-center justify-between">
-              <div><span class="text-xs font-semibold text-cf-dark">Phase 1 · Week 1</span><h3 class="font-semibold">Deploy upstream unchanged</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t border-slate-100 pt-4">
-              <table class="w-full text-sm mb-4">
-                <thead><tr class="text-left text-slate-500 border-b"><th class="pb-2 pr-2">Step</th><th class="pb-2 pr-2">Action</th><th class="pb-2">Section</th></tr></thead>
-                <tbody class="divide-y divide-slate-50">
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.1</td><td class="py-2 pr-2">Read README + <a href="https://github.com/cloudflare/agentic-inbox/issues/4#issuecomment-4269118513" class="text-cf-dark underline">setup comment</a></td><td class="py-2"><a href="#cf-01" class="text-cf-dark">01</a></td></tr>
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.2</td><td class="py-2 pr-2">Set DOMAINS in wrangler.jsonc; create R2 bucket</td><td class="py-2"><a href="#cf-01" class="text-cf-dark">01</a></td></tr>
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.3</td><td class="py-2 pr-2">Deploy; Cloudflare Access; POLICY_AUD, TEAM_DOMAIN secrets</td><td class="py-2"><a href="#cf-01" class="text-cf-dark">01</a></td></tr>
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.4</td><td class="py-2 pr-2">Email Routing catch-all → Worker</td><td class="py-2"><a href="#cf-02" class="text-cf-dark">02</a></td></tr>
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.5</td><td class="py-2 pr-2">Enable Email Sending (send_email binding)</td><td class="py-2"><a href="#cf-05" class="text-cf-dark">05</a></td></tr>
-                  <tr><td class="py-2 pr-2 font-mono text-xs">1.6</td><td class="py-2 pr-2">Create mailbox; send/receive test mail</td><td class="py-2"><a href="#cf-01" class="text-cf-dark">01</a></td></tr>
+        <div class="card">
+          <div class="card-body">
+            <h3 style="font-size:1.05rem;margin-bottom:1rem">Progress log</h3>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead><tr><th>Date</th><th>Milestone</th><th>Track</th><th>Done</th></tr></thead>
+                <tbody data-checklist="progress">
+                  <tr><td style="color:var(--ink-faint)">—</td><td>Deploy agentic-inbox</td><td><span class="track-badge cf">CF</span></td><td><input type="checkbox" class="check-item" data-id="prog-cf-deploy" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>Trace inbound path</td><td><span class="track-badge cf">CF</span></td><td><input type="checkbox" class="check-item" data-id="prog-cf-inbound" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>Trace outbound path</td><td><span class="track-badge cf">CF</span></td><td><input type="checkbox" class="check-item" data-id="prog-cf-outbound" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>Minimal clone v1</td><td><span class="track-badge cf">CF</span></td><td><input type="checkbox" class="check-item" data-id="prog-cf-clone" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>SES domain verified</td><td><span class="track-badge aws">AWS</span></td><td><input type="checkbox" class="check-item" data-id="prog-aws-domain" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>Inbound S3 + Lambda</td><td><span class="track-badge aws">AWS</span></td><td><input type="checkbox" class="check-item" data-id="prog-aws-inbound" /></td></tr>
+                  <tr><td style="color:var(--ink-faint)">—</td><td>AWS v1 complete</td><td><span class="track-badge aws">AWS</span></td><td><input type="checkbox" class="check-item" data-id="prog-aws-v1" /></td></tr>
                 </tbody>
               </table>
-              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg"><strong>Checkpoint:</strong> Send and receive real email through the deployed app.</p>
             </div>
-          </details>
-
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
-            <summary class="px-6 py-4 flex items-center justify-between">
-              <div><span class="text-xs font-semibold text-cf-dark">Phase 2 · Week 2</span><h3 class="font-semibold">Read the code</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t border-slate-100 pt-4">
-              <p class="text-sm text-slate-600 mb-4">Trace inbound + outbound. Answer questions in sections <a href="#cf-02" class="text-cf-dark underline">02–06</a>.</p>
-              <table class="w-full text-sm">
-                <thead><tr class="text-left text-slate-500 border-b"><th class="pb-2 pr-2">Topic</th><th class="pb-2">Files in clone</th></tr></thead>
-                <tbody class="divide-y divide-slate-50 text-sm">
-                  <tr><td class="py-2 pr-2">Worker + email handler</td><td class="py-2 font-mono text-xs">workers/app.ts, workers/index.ts</td></tr>
-                  <tr><td class="py-2 pr-2">MIME parsing</td><td class="py-2 font-mono text-xs">postal-mime in workers/index.ts</td></tr>
-                  <tr><td class="py-2 pr-2">Mailbox storage</td><td class="py-2 font-mono text-xs">workers/durableObject/, workers/db/schema.ts</td></tr>
-                  <tr><td class="py-2 pr-2">Attachments</td><td class="py-2 font-mono text-xs">workers/lib/attachments.ts</td></tr>
-                  <tr><td class="py-2 pr-2">Threading</td><td class="py-2 font-mono text-xs">email-helpers.ts, reply-forward.ts</td></tr>
-                  <tr><td class="py-2 pr-2">Outbound</td><td class="py-2 font-mono text-xs">workers/email-sender.ts</td></tr>
-                  <tr><td class="py-2 pr-2">Frontend API</td><td class="py-2 font-mono text-xs">app/services/api.ts, app/queries/</td></tr>
-                </tbody>
-              </table>
-              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> Draw inbound/outbound diagrams from memory; point to files.</p>
-            </div>
-          </details>
-
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
-            <summary class="px-6 py-4 flex items-center justify-between">
-              <div><span class="text-xs font-semibold text-cf-dark">Phase 3 · Weeks 3–5</span><h3 class="font-semibold">Minimal clone</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t border-slate-100 pt-4">
-              <ol class="list-decimal list-inside space-y-1 text-sm text-slate-700">
-                <li>Email Worker logs from/subject only</li>
-                <li>Store raw .eml in R2; parse in Worker or DO</li>
-                <li>DO SQLite schema: threads, messages, attachments</li>
-                <li>Read-only API + minimal UI</li>
-                <li>Outbound via send_email binding</li>
-                <li>Reply threading (Message-ID, In-Reply-To, References)</li>
-                <li>Attachment upload/download</li>
-                <li>Search (FTS in DO SQLite or D1)</li>
-                <li>Cloudflare Access (or hardcoded session locally)</li>
-              </ol>
-              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> v1 checklist without AI agent code.</p>
-            </div>
-          </details>
-
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group">
-            <summary class="px-6 py-4 flex items-center justify-between">
-              <div><span class="text-xs font-semibold text-cf-dark">Phase 4 · Week 6+</span><h3 class="font-semibold">Optional deep dives</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t border-slate-100 pt-4 text-sm">
-              <ul class="space-y-2">
-                <li><a href="#cf-07" class="text-cf-dark underline">07</a> — Cloudflare Access JWT validation</li>
-                <li><a href="#cf-08" class="text-cf-dark underline">08</a> — AI agent + Agents SDK (optional)</li>
-              </ul>
-            </div>
-          </details>
+            <p class="note-foot">Log dates in Obsidian; use checkboxes here for quick status.</p>
+          </div>
         </div>
       </section>
 
-      <!-- CF STUDY SECTIONS - generated via template pattern in HTML -->
-      <div id="cf-sections" class="track-cf space-y-6 mb-16" data-track="cf"></div>
-
-      <!-- TRACK 2 PHASES -->
-      <section id="aws-phases" class="track-aws mb-16 scroll-mt-8" data-track="aws">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="w-3 h-3 rounded-full bg-aws"></span>
-          <h2 class="text-2xl font-bold">Track 2 — AWS SES phases</h2>
+      <section id="cf-phases" class="scroll-section track-cf" data-track="cf">
+        <div class="track-header">
+          <span class="track-dot cf"></span>
+          <h2 class="section-title">Track 1 — Cloudflare phases</h2>
         </div>
-        <p class="text-slate-600 mb-6">Goal: same v1 mailbox using AWS primitives. Code: <code class="text-xs bg-slate-100 px-1 rounded">aws/inbox/</code></p>
+        <p class="section-lead">Goal: understand agentic-inbox, then rebuild a stripped-down version.</p>
 
-        <div class="space-y-4">
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm" open>
-            <summary class="px-6 py-4 flex items-center justify-between cursor-pointer">
-              <div><span class="text-xs font-semibold text-aws-dark">Phase 1 · Week 1</span><h3 class="font-semibold">SES foundation</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t pt-4 text-sm">
-              <table class="w-full mb-4"><tbody class="divide-y">
-                <tr><td class="py-2 w-12 font-mono text-xs">2.1</td><td class="py-2">Verify domain; DKIM, SPF, DMARC → <a href="#aws-01" class="text-aws-dark underline">01</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.2</td><td class="py-2">Sandbox limits / production access → <a href="#aws-01" class="text-aws-dark underline">01</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.3</td><td class="py-2">Test send via CLI/SDK → <a href="#aws-05" class="text-aws-dark underline">05</a></td></tr>
-              </tbody></table>
-            </div>
-          </details>
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm">
-            <summary class="px-6 py-4 flex items-center justify-between cursor-pointer">
-              <div><span class="text-xs font-semibold text-aws-dark">Phase 2 · Week 2</span><h3 class="font-semibold">Inbound pipeline</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t pt-4 text-sm">
-              <table class="w-full"><tbody class="divide-y">
-                <tr><td class="py-2 w-12 font-mono text-xs">2.4</td><td class="py-2">Receipt rule → S3 → <a href="#aws-02" class="text-aws-dark underline">02</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.5</td><td class="py-2">SNS → Lambda → <a href="#aws-02" class="text-aws-dark underline">02</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.6</td><td class="py-2">Parse MIME → DynamoDB → <a href="#aws-03" class="text-aws-dark underline">03</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.7</td><td class="py-2">Attachments → S3 → <a href="#aws-04" class="text-aws-dark underline">04</a></td></tr>
-              </tbody></table>
-            </div>
-          </details>
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm">
-            <summary class="px-6 py-4 flex items-center justify-between cursor-pointer">
-              <div><span class="text-xs font-semibold text-aws-dark">Phase 3 · Weeks 3–4</span><h3 class="font-semibold">API + UI</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t pt-4 text-sm">
-              <table class="w-full"><tbody class="divide-y">
-                <tr><td class="py-2 w-12 font-mono text-xs">2.8</td><td class="py-2">API Gateway + Lambda → <a href="#aws-06" class="text-aws-dark underline">06</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.9</td><td class="py-2">Minimal React inbox → <a href="#aws-06" class="text-aws-dark underline">06</a></td></tr>
-                <tr><td class="py-2 font-mono text-xs">2.10</td><td class="py-2">Reply via SendRawEmail → <a href="#aws-05" class="text-aws-dark underline">05</a></td></tr>
-              </tbody></table>
-              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> v1 on AWS; update comparison notes.</p>
-            </div>
-          </details>
-          <details class="bg-white border border-slate-200 rounded-xl shadow-sm">
-            <summary class="px-6 py-4 flex items-center justify-between cursor-pointer">
-              <div><span class="text-xs font-semibold text-aws-dark">Phase 4 · Week 5</span><h3 class="font-semibold">Production hygiene</h3></div>
-              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </summary>
-            <div class="px-6 pb-6 border-t pt-4 text-sm">
-              <ul class="space-y-1">
-                <li><a href="#aws-07" class="text-aws-dark underline">07</a> — Bounce/complaint SNS</li>
-                <li><a href="#aws-08" class="text-aws-dark underline">08</a> — Auth (Cognito or API key)</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </section>
+        <details class="panel" open>
+          <summary>
+            <div><span class="panel-phase cf">Phase 1 · Week 1</span><p class="panel-title">Deploy upstream unchanged</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <table class="data-table" style="margin-bottom:1rem">
+              <thead><tr><th>Step</th><th>Action</th><th>Section</th></tr></thead>
+              <tbody>
+                <tr><td><code>1.1</code></td><td>Read README + <a href="https://github.com/cloudflare/agentic-inbox/issues/4#issuecomment-4269118513">setup comment</a></td><td><a href="#cf-01">01</a></td></tr>
+                <tr><td><code>1.2</code></td><td>Set DOMAINS in wrangler.jsonc; create R2 bucket</td><td><a href="#cf-01">01</a></td></tr>
+                <tr><td><code>1.3</code></td><td>Deploy; Cloudflare Access; POLICY_AUD, TEAM_DOMAIN secrets</td><td><a href="#cf-01">01</a></td></tr>
+                <tr><td><code>1.4</code></td><td>Email Routing catch-all → Worker</td><td><a href="#cf-02">02</a></td></tr>
+                <tr><td><code>1.5</code></td><td>Enable Email Sending (send_email binding)</td><td><a href="#cf-05">05</a></td></tr>
+                <tr><td><code>1.6</code></td><td>Create mailbox; send/receive test mail</td><td><a href="#cf-01">01</a></td></tr>
+              </tbody>
+            </table>
+            <p class="checkpoint"><strong>Checkpoint:</strong> Send and receive real email through the deployed app.</p>
+          </div>
+        </details>
 
-      <div id="aws-sections" class="track-aws space-y-6 mb-16" data-track="aws"></div>
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase cf">Phase 2 · Week 2</span><p class="panel-title">Read the code</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <p style="margin-bottom:1rem">Trace inbound + outbound. Answer questions in sections <a href="#cf-02">02–06</a>.</p>
+            <table class="data-table">
+              <thead><tr><th>Topic</th><th>Files in clone</th></tr></thead>
+              <tbody>
+                <tr><td>Worker + email handler</td><td><code>workers/app.ts, workers/index.ts</code></td></tr>
+                <tr><td>MIME parsing</td><td><code>postal-mime in workers/index.ts</code></td></tr>
+                <tr><td>Mailbox storage</td><td><code>workers/durableObject/, workers/db/schema.ts</code></td></tr>
+                <tr><td>Attachments</td><td><code>workers/lib/attachments.ts</code></td></tr>
+                <tr><td>Threading</td><td><code>email-helpers.ts, reply-forward.ts</code></td></tr>
+                <tr><td>Outbound</td><td><code>workers/email-sender.ts</code></td></tr>
+                <tr><td>Frontend API</td><td><code>app/services/api.ts, app/queries/</code></td></tr>
+              </tbody>
+            </table>
+            <p class="checkpoint"><strong>Checkpoint:</strong> Draw inbound/outbound diagrams from memory; point to files.</p>
+          </div>
+        </details>
 
-      <!-- COMPARE -->
-      <section id="compare" class="mb-16 scroll-mt-8">
-        <h2 class="text-2xl font-bold mb-2">Cloudflare vs AWS</h2>
-        <p class="text-slate-600 text-sm mb-6">Reference mapping — fill detailed comparisons in Obsidian.</p>
-        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-6">
-          <div class="px-6 py-3 bg-slate-50 border-b font-semibold text-sm">Architecture mapping</div>
-          <table class="w-full text-sm">
-            <thead><tr class="border-b bg-slate-50/50"><th class="text-left px-6 py-3 text-slate-500">Concept</th><th class="text-left px-6 py-3 text-slate-500">Cloudflare</th><th class="text-left px-6 py-3 text-slate-500">AWS</th></tr></thead>
-            <tbody class="divide-y divide-slate-100">
-              <tr><td class="px-6 py-3 font-medium">Inbound</td><td class="px-6 py-3">Email Routing → Worker</td><td class="px-6 py-3">SES receipt rule</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Raw MIME</td><td class="px-6 py-3">R2 raw/</td><td class="px-6 py-3">S3 raw/</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Parse / index</td><td class="px-6 py-3">Worker + Mailbox DO</td><td class="px-6 py-3">Lambda</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Metadata DB</td><td class="px-6 py-3">SQLite in DO</td><td class="px-6 py-3">DynamoDB</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Attachments</td><td class="px-6 py-3">R2</td><td class="px-6 py-3">S3</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Outbound</td><td class="px-6 py-3">send_email binding</td><td class="px-6 py-3">SendRawEmail</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Web API</td><td class="px-6 py-3">Hono on Worker</td><td class="px-6 py-3">API Gateway + Lambda</td></tr>
-              <tr><td class="px-6 py-3 font-medium">Auth</td><td class="px-6 py-3">Cloudflare Access</td><td class="px-6 py-3">Cognito / API key</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
-          <strong>Milestone comparison, cost notes, gotchas:</strong> keep these in your Obsidian vault as you learn.
-        </div>
-      </section>
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase cf">Phase 3 · Weeks 3–5</span><p class="panel-title">Minimal clone</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <ol class="block-list">
+              <li>Email Worker logs from/subject only</li>
+              <li>Store raw .eml in R2; parse in Worker or DO</li>
+              <li>DO SQLite schema: threads, messages, attachments</li>
+              <li>Read-only API + minimal UI</li>
+              <li>Outbound via send_email binding</li>
+              <li>Reply threading (Message-ID, In-Reply-To, References)</li>
+              <li>Attachment upload/download</li>
+              <li>Search (FTS in DO SQLite or D1)</li>
+              <li>Cloudflare Access (or hardcoded session locally)</li>
+            </ol>
+            <p class="checkpoint"><strong>Checkpoint:</strong> v1 checklist without AI agent code.</p>
+          </div>
+        </details>
 
-      <!-- REFERENCES -->
-      <section id="references" class="mb-16 scroll-mt-8">
-        <h2 class="text-2xl font-bold mb-2">External reference repos</h2>
-        <p class="text-slate-600 text-sm mb-6">No official AWS equivalent of agentic-inbox exists.</p>
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-white border rounded-xl p-5 shadow-sm">
-            <h3 class="font-semibold text-cf-dark mb-3">Cloudflare</h3>
-            <ul class="text-sm space-y-2">
-              <li><a href="https://github.com/cloudflare/agentic-inbox" class="text-cf-dark underline">agentic-inbox</a> — main reference (cloned locally)</li>
-              <li><a href="https://blog.cloudflare.com/email-for-agents/" class="text-cf-dark underline">Email for Agents blog</a></li>
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase cf">Phase 4 · Week 6+</span><p class="panel-title">Optional deep dives</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <ul class="bullet-list">
+              <li><a href="#cf-07">07</a> — Cloudflare Access JWT validation</li>
+              <li><a href="#cf-08">08</a> — AI agent + Agents SDK (optional)</li>
             </ul>
           </div>
-          <div class="bg-white border rounded-xl p-5 shadow-sm">
-            <h3 class="font-semibold text-aws-dark mb-3">AWS (partial)</h3>
-            <ul class="text-sm space-y-2">
-              <li><a href="https://github.com/dublyo/mailat" class="text-aws-dark underline">mailat</a> — closest full inbox</li>
-              <li><a href="https://github.com/moogle-cc/email" class="text-aws-dark underline">moogle-cc/email</a> — React + Lambda</li>
-              <li><a href="https://github.com/rfoel/inbox" class="text-aws-dark underline">rfoel/inbox</a> — SST + Astro</li>
-              <li><a href="https://github.com/0x4447/0x4447_product_s3_email" class="text-aws-dark underline">0x4447_product_s3_email</a> — plumbing only</li>
-              <li><a href="https://github.com/aws-samples/serverless-mail" class="text-aws-dark underline">aws-samples/serverless-mail</a></li>
+        </details>
+      </section>
+
+      <div id="cf-sections" class="track-cf" data-track="cf"></div>
+
+      <section id="aws-phases" class="scroll-section track-aws" data-track="aws">
+        <div class="track-header">
+          <span class="track-dot aws"></span>
+          <h2 class="section-title">Track 2 — AWS SES phases</h2>
+        </div>
+        <p class="section-lead">Goal: same v1 mailbox using AWS primitives. Code: <code>aws/inbox/</code></p>
+
+        <details class="panel" open>
+          <summary>
+            <div><span class="panel-phase aws">Phase 1 · Week 1</span><p class="panel-title">SES foundation</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <table class="data-table">
+              <tbody>
+                <tr><td><code>2.1</code></td><td>Verify domain; DKIM, SPF, DMARC → <a href="#aws-01">01</a></td></tr>
+                <tr><td><code>2.2</code></td><td>Sandbox limits / production access → <a href="#aws-01">01</a></td></tr>
+                <tr><td><code>2.3</code></td><td>Test send via CLI/SDK → <a href="#aws-05">05</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase aws">Phase 2 · Week 2</span><p class="panel-title">Inbound pipeline</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <table class="data-table">
+              <tbody>
+                <tr><td><code>2.4</code></td><td>Receipt rule → S3 → <a href="#aws-02">02</a></td></tr>
+                <tr><td><code>2.5</code></td><td>SNS → Lambda → <a href="#aws-02">02</a></td></tr>
+                <tr><td><code>2.6</code></td><td>Parse MIME → DynamoDB → <a href="#aws-03">03</a></td></tr>
+                <tr><td><code>2.7</code></td><td>Attachments → S3 → <a href="#aws-04">04</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase aws">Phase 3 · Weeks 3–4</span><p class="panel-title">API + UI</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <table class="data-table">
+              <tbody>
+                <tr><td><code>2.8</code></td><td>API Gateway + Lambda → <a href="#aws-06">06</a></td></tr>
+                <tr><td><code>2.9</code></td><td>Minimal React inbox → <a href="#aws-06">06</a></td></tr>
+                <tr><td><code>2.10</code></td><td>Reply via SendRawEmail → <a href="#aws-05">05</a></td></tr>
+              </tbody>
+            </table>
+            <p class="checkpoint"><strong>Checkpoint:</strong> v1 on AWS; update comparison notes.</p>
+          </div>
+        </details>
+
+        <details class="panel">
+          <summary>
+            <div><span class="panel-phase aws">Phase 4 · Week 5</span><p class="panel-title">Production hygiene</p></div>
+            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </summary>
+          <div class="panel-body">
+            <ul class="bullet-list">
+              <li><a href="#aws-07">07</a> — Bounce/complaint SNS</li>
+              <li><a href="#aws-08">08</a> — Auth (Cognito or API key)</li>
             </ul>
           </div>
+        </details>
+      </section>
+
+      <div id="aws-sections" class="track-aws" data-track="aws"></div>
+
+      <section id="compare" class="scroll-section">
+        <h2 class="section-title">Cloudflare vs AWS</h2>
+        <p class="section-lead">Reference mapping — fill detailed comparisons in Obsidian.</p>
+        <div class="card" style="margin-bottom:1.5rem">
+          <div class="table-head">Architecture mapping</div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Concept</th><th>Cloudflare</th><th>AWS</th></tr></thead>
+              <tbody>
+                <tr><td>Inbound</td><td>Email Routing → Worker</td><td>SES receipt rule</td></tr>
+                <tr><td>Raw MIME</td><td>R2 raw/</td><td>S3 raw/</td></tr>
+                <tr><td>Parse / index</td><td>Worker + Mailbox DO</td><td>Lambda</td></tr>
+                <tr><td>Metadata DB</td><td>SQLite in DO</td><td>DynamoDB</td></tr>
+                <tr><td>Attachments</td><td>R2</td><td>S3</td></tr>
+                <tr><td>Outbound</td><td>send_email binding</td><td>SendRawEmail</td></tr>
+                <tr><td>Web API</td><td>Hono on Worker</td><td>API Gateway + Lambda</td></tr>
+                <tr><td>Auth</td><td>Cloudflare Access</td><td>Cognito / API key</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="callout-warn"><strong>Milestone comparison, cost notes, gotchas:</strong> keep these in your Obsidian vault as you learn.</div>
+      </section>
+
+      <section id="references" class="scroll-section">
+        <h2 class="section-title">External reference repos</h2>
+        <p class="section-lead">No official AWS equivalent of agentic-inbox exists.</p>
+        <div class="card-grid">
+          <div class="card cf"><div class="card-body">
+            <h3>Cloudflare</h3>
+            <ul class="bullet-list">
+              <li><a href="https://github.com/cloudflare/agentic-inbox">agentic-inbox</a> — main reference (cloned locally)</li>
+              <li><a href="https://blog.cloudflare.com/email-for-agents/">Email for Agents blog</a></li>
+            </ul>
+          </div></div>
+          <div class="card aws"><div class="card-body">
+            <h3>AWS (partial)</h3>
+            <ul class="bullet-list">
+              <li><a href="https://github.com/dublyo/mailat">mailat</a> — closest full inbox</li>
+              <li><a href="https://github.com/moogle-cc/email">moogle-cc/email</a> — React + Lambda</li>
+              <li><a href="https://github.com/rfoel/inbox">rfoel/inbox</a> — SST + Astro</li>
+              <li><a href="https://github.com/0x4447/0x4447_product_s3_email">0x4447_product_s3_email</a> — plumbing only</li>
+              <li><a href="https://github.com/aws-samples/serverless-mail">aws-samples/serverless-mail</a></li>
+            </ul>
+          </div></div>
         </div>
       </section>
 
-      <!-- RESOURCES -->
-      <section id="resources" class="mb-16 scroll-mt-8">
-        <h2 class="text-2xl font-bold mb-6">Resources</h2>
-        <div class="grid md:grid-cols-3 gap-4 text-sm">
-          <div class="bg-white border rounded-xl p-5">
-            <h3 class="font-semibold mb-3">Cloudflare</h3>
-            <ul class="space-y-2"><li><a href="https://developers.cloudflare.com/email-routing/" class="text-cf-dark underline">Email Routing</a></li><li><a href="https://developers.cloudflare.com/email-service/" class="text-cf-dark underline">Email Service</a></li><li><a href="https://developers.cloudflare.com/durable-objects/" class="text-cf-dark underline">Durable Objects</a></li><li><a href="https://www.npmjs.com/package/postal-mime" class="text-cf-dark underline">postal-mime</a></li></ul>
-          </div>
-          <div class="bg-white border rounded-xl p-5">
-            <h3 class="font-semibold mb-3">AWS</h3>
-            <ul class="space-y-2"><li><a href="https://docs.aws.amazon.com/ses/latest/dg/receiving-email.html" class="text-aws-dark underline">SES receiving</a></li><li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email.html" class="text-aws-dark underline">SES sending</a></li><li><a href="https://docs.aws.amazon.com/ses/latest/dg/receiving-email-receipt-rules.html" class="text-aws-dark underline">Receipt rules</a></li></ul>
-          </div>
-          <div class="bg-white border rounded-xl p-5">
-            <h3 class="font-semibold mb-3">Standards</h3>
-            <ul class="space-y-2"><li>RFC 5322 — message format</li><li>RFC 8621 — JMAP (optional reference)</li></ul>
-          </div>
+      <section id="resources" class="scroll-section">
+        <h2 class="section-title">Resources</h2>
+        <div class="card-grid cols-3">
+          <div class="card"><div class="card-body">
+            <h3>Cloudflare</h3>
+            <ul class="bullet-list">
+              <li><a href="https://developers.cloudflare.com/email-routing/">Email Routing</a></li>
+              <li><a href="https://developers.cloudflare.com/email-service/">Email Service</a></li>
+              <li><a href="https://developers.cloudflare.com/durable-objects/">Durable Objects</a></li>
+              <li><a href="https://www.npmjs.com/package/postal-mime">postal-mime</a></li>
+            </ul>
+          </div></div>
+          <div class="card"><div class="card-body">
+            <h3>AWS</h3>
+            <ul class="bullet-list">
+              <li><a href="https://docs.aws.amazon.com/ses/latest/dg/receiving-email.html">SES receiving</a></li>
+              <li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email.html">SES sending</a></li>
+              <li><a href="https://docs.aws.amazon.com/ses/latest/dg/receiving-email-receipt-rules.html">Receipt rules</a></li>
+            </ul>
+          </div></div>
+          <div class="card"><div class="card-body">
+            <h3>Standards</h3>
+            <ul class="bullet-list">
+              <li>RFC 5322 — message format</li>
+              <li>RFC 8621 — JMAP (optional reference)</li>
+            </ul>
+          </div></div>
         </div>
       </section>
 
-      <footer class="text-center text-xs text-slate-400 pb-10">
-        Answer study questions in Obsidian · Checkboxes persist in localStorage · Open <code class="bg-slate-100 px-1 rounded">index.html</code> in browser
+      <footer class="site-footer">
+        Answer study questions in Obsidian · Checkboxes persist in localStorage · Open <code>index.html</code> in browser
       </footer>
     </main>
   </div>
 
+  <script src="assets/lab-core.js"></script>
   <script>
-    // Section data: tasks, concepts, question groups, checkpoints
     const cfSections = [
       { id:'cf-01', num:'01', title:'Setup & deploy', phase:'Track 1 · Phase 1', upstream:'agentic-inbox/README.md, wrangler.jsonc',
         tasks:['Read upstream README end to end','Read detailed setup comment on GitHub issue #4','Set DOMAINS in wrangler.jsonc','Create R2 bucket: wrangler r2 bucket create agentic-inbox','Deploy (button or npm run deploy)','Configure Cloudflare Access; set POLICY_AUD and TEAM_DOMAIN','Create a mailbox in the UI'],
@@ -550,52 +521,37 @@
     ];
 
     function renderSection(s, track) {
-      const isCf = track === 'cf';
-      const headerBg = isCf ? 'bg-orange-50' : 'bg-amber-50';
-      const badgeCls = isCf ? 'text-orange-700' : 'text-amber-700';
-      const dotCls = isCf ? 'text-orange-500' : 'text-amber-500';
-      const opt = s.optional ? '<span class="ml-2 px-2 py-0.5 text-xs bg-slate-100 text-slate-500 rounded">optional</span>' : '';
-      let qHtml = s.questions.map(g => `
-        <details class="question-group border border-slate-100 rounded-lg mb-2 bg-slate-50/50">
-          <summary class="px-4 py-2.5 text-sm font-medium text-slate-700 flex items-center justify-between">
-            ${g.g} <span class="text-xs text-slate-400">${g.q.length} questions</span>
-          </summary>
-          <ol class="px-4 pb-3 pt-1 list-decimal list-inside text-sm text-slate-600 space-y-2">${g.q.map(x=>`<li>${x}</li>`).join('')}</ol>
+      const headCls = track;
+      const opt = s.optional ? '<span class="tag-optional">optional</span>' : '';
+      const qHtml = s.questions.map(g => `
+        <details class="question-group">
+          <summary>${g.g} <span style="font-size:0.75rem;color:var(--ink-faint)">${g.q.length} questions</span></summary>
+          <ol>${g.q.map(x=>'<li>'+x+'</li>').join('')}</ol>
         </details>`).join('');
-      let cpHtml = `
-        <ul class="text-sm text-slate-600 space-y-1 mb-4">${s.checkpoints.map(c=>`<li class="flex gap-2"><span class="${dotCls}">•</span>${c}</li>`).join('')}</ul>
-        <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
-          <input type="checkbox" class="check-item section-check rounded border-slate-300" data-id="${s.id}-complete" />
+      const cpHtml = `
+        <ul class="bullet-list">${s.checkpoints.map(c=>'<li>'+c+'</li>').join('')}</ul>
+        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.9rem;margin-top:0.75rem">
+          <input type="checkbox" class="check-item section-check" data-id="${s.id}-complete" />
           <span>Section complete</span>
         </label>`;
       return `
-      <article id="${s.id}" class="scroll-mt-8 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden section-card" data-track="${track}">
-        <div class="px-6 py-4 border-b border-slate-100 ${headerBg}">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-xs font-bold ${badgeCls}">${s.num}</span>
-            <h3 class="text-lg font-semibold">${s.title}</h3>${opt}
-          </div>
-          <p class="text-xs text-slate-500 mt-1">${s.phase} · <span class="font-mono">${s.upstream}</span></p>
+      <article id="${s.id}" class="section-card" data-track="${track}">
+        <div class="section-card-head ${headCls}">
+          <span class="section-num ${headCls}">${s.num}</span>
+          <h3 class="section-card-title">${s.title}</h3>${opt}
+          <p class="section-meta">${s.phase} · ${s.upstream}</p>
         </div>
-        <div class="p-6 space-y-6">
-          <div>
-            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">What to do</h4>
-            <ol class="list-decimal list-inside text-sm text-slate-700 space-y-1">${s.tasks.map(t=>`<li>${t}</li>`).join('')}</ol>
-          </div>
-          <div>
-            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Concepts to notice</h4>
-            <ul class="text-sm text-slate-600 space-y-1">${s.concepts.map(c=>`<li class="flex gap-2"><span class="${dotCls}">•</span>${c}</li>`).join('')}</ul>
-          </div>
-          <div class="bg-indigo-50 border border-indigo-100 rounded-lg px-4 py-3 text-sm text-indigo-900">
-            <strong>Answer in Obsidian:</strong> copy question groups below into your notebook. No answer fields here — one source of truth.
-          </div>
-          <div>
-            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Study questions</h4>
-            ${qHtml}
-          </div>
-          <div class="border-t border-slate-100 pt-4">
-            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-3">Section checkpoint</h4>
-            <p class="text-xs text-slate-500 mb-3">Confirm when all criteria below are met — one checkbox per section drives progress.</p>
+        <div class="section-card-body">
+          <p class="block-label">What to do</p>
+          <ol class="block-list">${s.tasks.map(t=>'<li>'+t+'</li>').join('')}</ol>
+          <p class="block-label">Concepts to notice</p>
+          <ul class="bullet-list">${s.concepts.map(c=>'<li>'+c+'</li>').join('')}</ul>
+          <div class="obsidian-note"><strong>Answer in Obsidian:</strong> copy question groups below into your notebook. No answer fields here — one source of truth.</div>
+          <p class="block-label">Study questions</p>
+          ${qHtml}
+          <div style="border-top:1px solid var(--paper-border);padding-top:1rem;margin-top:0.5rem">
+            <p class="block-label">Section checkpoint</p>
+            <p style="font-size:0.8rem;color:var(--ink-faint);margin-bottom:0.75rem">Confirm when all criteria below are met — one checkbox per section drives progress.</p>
             ${cpHtml}
           </div>
         </div>
@@ -605,92 +561,26 @@
     document.getElementById('cf-sections').innerHTML = cfSections.map(s => renderSection(s, 'cf')).join('');
     document.getElementById('aws-sections').innerHTML = awsSections.map(s => renderSection(s, 'aws')).join('');
 
-    // Theme toggle
-    const THEME_KEY = 'email-study-plan-theme';
-    function syncThemeIcons() {
-      const dark = document.documentElement.classList.contains('dark');
-      document.querySelectorAll('.theme-toggle').forEach(btn => {
-        btn.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden', !dark));
-        btn.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden', dark));
-        const label = btn.querySelector('.theme-label');
-        if (label) label.textContent = dark ? 'Light mode' : 'Dark mode';
-      });
-    }
-    function setTheme(dark) {
-      document.documentElement.classList.toggle('dark', dark);
-      localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
-      syncThemeIcons();
-    }
-    document.querySelectorAll('.theme-toggle').forEach(btn => {
-      btn.addEventListener('click', () => setTheme(!document.documentElement.classList.contains('dark')));
-    });
-    syncThemeIcons();
-
-    // localStorage checkboxes
-    const STORAGE_KEY = 'email-study-plan-v1';
-    function loadChecks() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
-    }
-    function saveChecks(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-    function migrateChecks(state) {
+    LabCore.initTheme();
+    LabCore.initSidebar();
+    LabCore.initNavHighlight();
+    LabCore.initCheckboxes('email-study-plan-v1', function(state) {
       const sectionIds = [...cfSections, ...awsSections].map(s => s.id);
       let changed = false;
       for (const id of sectionIds) {
-        const key = `${id}-complete`;
+        const key = id + '-complete';
         if (state[key]) continue;
-        const hadAny = Object.keys(state).some(k => k.startsWith(`${id}-cp-`) && state[k]);
+        const hadAny = Object.keys(state).some(k => k.startsWith(id + '-cp-') && state[k]);
         if (hadAny) { state[key] = true; changed = true; }
       }
-      if (changed) saveChecks(state);
+      if (changed) localStorage.setItem('email-study-plan-v1', JSON.stringify(state));
       return state;
-    }
-    function updateProgress() {
-      const all = document.querySelectorAll('.check-item');
-      const checked = document.querySelectorAll('.check-item:checked');
-      const pct = all.length ? Math.round(checked.length / all.length * 100) : 0;
-      document.getElementById('progress-bar').style.width = pct + '%';
-      document.getElementById('progress-text').textContent = pct + '%';
-    }
-    const state = migrateChecks(loadChecks());
-    document.querySelectorAll('.check-item').forEach(el => {
-      if (state[el.dataset.id]) el.checked = true;
-      el.addEventListener('change', () => {
-        state[el.dataset.id] = el.checked;
-        saveChecks(state);
-        updateProgress();
-      });
     });
-    updateProgress();
 
-    function expandAll(open) {
-      document.querySelectorAll('details').forEach(d => { d.open = open; });
-    }
-
-    // Track filter
-    document.getElementById('track-filter').addEventListener('change', e => {
+    document.getElementById('track-filter').addEventListener('change', function(e) {
       const v = e.target.value;
-      document.querySelectorAll('[data-track]').forEach(el => {
-        if (v === 'all') el.style.display = '';
-        else el.style.display = el.dataset.track === v ? '' : 'none';
-      });
-    });
-
-    // Mobile menu
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-    });
-    document.querySelectorAll('#sidebar a').forEach(a => {
-      a.addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
-    });
-
-    // Active nav on scroll
-    const sections = document.querySelectorAll('section[id], article[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
-      navLinks.forEach(l => {
-        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      document.querySelectorAll('[data-track]').forEach(function(el) {
+        el.style.display = (v === 'all' || el.dataset.track === v) ? '' : 'none';
       });
     });
   </script>
