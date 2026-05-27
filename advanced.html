@@ -390,11 +390,12 @@
           </summary>
           <ol class="px-4 pb-3 pt-1 list-decimal list-inside text-sm text-slate-600 space-y-2">${g.q.map(x=>`<li>${x}</li>`).join('')}</ol>
         </details>`).join('');
-      let cpHtml = s.checkpoints.map((c,i)=>`
-        <label class="flex items-center gap-2 text-sm cursor-pointer">
-          <input type="checkbox" class="check-item rounded border-slate-300" data-id="${s.id}-cp-${i}" />
-          <span>${c}</span>
-        </label>`).join('');
+      let cpHtml = `
+        <ul class="text-sm text-slate-600 space-y-1 mb-4">${s.checkpoints.map(c=>`<li class="flex gap-2"><span class="text-indigo-500">•</span>${c}</li>`).join('')}</ul>
+        <label class="flex items-center gap-2 text-sm font-medium cursor-pointer">
+          <input type="checkbox" class="check-item section-check rounded border-slate-300" data-id="${s.id}-complete" />
+          <span>Section complete</span>
+        </label>`;
       return `
       <article id="${s.id}" class="scroll-mt-8 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden section-card" data-tier="${s.tier}">
         <div class="px-6 py-4 border-b border-slate-100 bg-indigo-50">
@@ -423,7 +424,8 @@
           </div>
           <div class="border-t border-slate-100 pt-4">
             <h4 class="text-xs font-semibold uppercase text-slate-400 mb-3">Section checkpoint</h4>
-            <div class="space-y-2">${cpHtml}</div>
+            <p class="text-xs text-slate-500 mb-3">Confirm when all criteria below are met — one checkbox per section drives progress.</p>
+            ${cpHtml}
           </div>
         </div>
       </article>`;
@@ -458,6 +460,17 @@
       try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
     }
     function saveChecks(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function migrateChecks(state) {
+      let changed = false;
+      for (const s of advSections) {
+        const key = `${s.id}-complete`;
+        if (state[key]) continue;
+        const hadAny = Object.keys(state).some(k => k.startsWith(`${s.id}-cp-`) && state[k]);
+        if (hadAny) { state[key] = true; changed = true; }
+      }
+      if (changed) saveChecks(state);
+      return state;
+    }
     function updateProgress() {
       const all = document.querySelectorAll('.check-item');
       const checked = document.querySelectorAll('.check-item:checked');
@@ -465,7 +478,7 @@
       document.getElementById('progress-bar').style.width = pct + '%';
       document.getElementById('progress-text').textContent = pct + '%';
     }
-    const state = loadChecks();
+    const state = migrateChecks(loadChecks());
     document.querySelectorAll('.check-item').forEach(el => {
       if (state[el.dataset.id]) el.checked = true;
       el.addEventListener('change', () => {
