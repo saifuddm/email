@@ -1,0 +1,3 @@
+[submodule "cloudflare/agentic-inbox"]
+	path = cloudflare/agentic-inbox
+	url = https://github.com/cloudflare/agentic-inbox.git

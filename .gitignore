@@ -1,0 +1,10 @@
+# Nested clones and local secrets
+aws/reference/
+
+# OS / editor
+.DS_Store
+*.swp
+
+# Env
+.env
+.env.*
