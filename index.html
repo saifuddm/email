@@ -20,11 +20,11 @@
 
   <div class="mobile-bar">
     <button id="menu-toggle" class="icon-btn" aria-label="Toggle menu">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <i data-lucide="menu"></i>
     </button>
     <button type="button" class="theme-toggle icon-btn" aria-label="Toggle dark mode">
-      <svg class="icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-      <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      <i data-lucide="sun" class="icon-sun hidden"></i>
+      <i data-lucide="moon" class="icon-moon"></i>
     </button>
   </div>
 
@@ -41,8 +41,8 @@
           <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
         </div>
         <button id="theme-toggle" type="button" class="theme-toggle theme-btn" aria-label="Toggle dark mode">
-          <svg class="icon-sun hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <i data-lucide="sun" class="icon-sun hidden"></i>
+          <i data-lucide="moon" class="icon-moon"></i>
           <span class="theme-label">Dark mode</span>
         </button>
       </div>
@@ -69,7 +69,7 @@
         <a href="#aws-07" class="nav-link indent">07 Bounces</a>
         <a href="#aws-08" class="nav-link indent">08 Auth</a>
         <p class="nav-group-label adv">Advanced</p>
-        <a href="advanced.html" class="nav-link">Advanced topics →</a>
+        <a href="advanced.html" class="nav-link nav-link-ext">Advanced topics</a>
         <p class="nav-group-label ref">Reference</p>
         <a href="#compare" class="nav-link">Compare CF vs AWS</a>
         <a href="#references" class="nav-link">External repos</a>
@@ -147,7 +147,7 @@
         <div class="cta-block">
           <h3>Ready for more?</h3>
           <p style="font-size:0.9rem;color:var(--ink-muted);margin:0">Once v1 is working, continue with AI agents, MCP, multi-user auth, IMAP, deliverability, queues, and other topics excluded from the v1 checklist.</p>
-          <a href="advanced.html" class="cta-btn">Open advanced study guide →</a>
+          <a href="advanced.html" class="cta-btn">Open advanced study guide</a>
         </div>
 
         <div class="card" style="margin-bottom:2rem">
@@ -197,7 +197,7 @@
         <details class="panel" open>
           <summary>
             <div><span class="panel-phase cf">Phase 1 · Week 1</span><p class="panel-title">Deploy upstream unchanged</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <table class="data-table" style="margin-bottom:1rem">
@@ -218,7 +218,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase cf">Phase 2 · Week 2</span><p class="panel-title">Read the code</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <p style="margin-bottom:1rem">Trace inbound + outbound. Answer questions in sections <a href="#cf-02">02–06</a>.</p>
@@ -241,7 +241,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase cf">Phase 3 · Weeks 3–5</span><p class="panel-title">Minimal clone</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <ol class="block-list">
@@ -262,7 +262,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase cf">Phase 4 · Week 6+</span><p class="panel-title">Optional deep dives</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <ul class="bullet-list">
@@ -285,7 +285,7 @@
         <details class="panel" open>
           <summary>
             <div><span class="panel-phase aws">Phase 1 · Week 1</span><p class="panel-title">SES foundation</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <table class="data-table">
@@ -301,7 +301,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase aws">Phase 2 · Week 2</span><p class="panel-title">Inbound pipeline</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <table class="data-table">
@@ -318,7 +318,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase aws">Phase 3 · Weeks 3–4</span><p class="panel-title">API + UI</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <table class="data-table">
@@ -335,7 +335,7 @@
         <details class="panel">
           <summary>
             <div><span class="panel-phase aws">Phase 4 · Week 5</span><p class="panel-title">Production hygiene</p></div>
-            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
             <ul class="bullet-list">
@@ -432,6 +432,8 @@
     </main>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="assets/lab-icons.js"></script>
   <script src="assets/lab-core.js"></script>
   <script>
     const cfSections = [
@@ -561,6 +563,7 @@
     document.getElementById('cf-sections').innerHTML = cfSections.map(s => renderSection(s, 'cf')).join('');
     document.getElementById('aws-sections').innerHTML = awsSections.map(s => renderSection(s, 'aws')).join('');
 
+    LabIcons.refresh();
     LabCore.initTheme();
     LabCore.initSidebar();
     LabCore.initNavHighlight();
