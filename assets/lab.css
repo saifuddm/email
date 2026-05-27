@@ -176,7 +176,18 @@ body {
   border-color: var(--paper-border-strong);
 }
 
-.icon-btn svg { width: 1.25rem; height: 1.25rem; }
+.icon-btn svg,
+.icon-btn .lucide,
+.icon-btn [data-lucide] { width: 1.25rem; height: 1.25rem; }
+
+.lucide,
+[data-lucide] {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.lucide-icon { stroke: currentColor; }
 
 /* Sidebar */
 .sidebar {
@@ -305,7 +316,9 @@ body {
   color: var(--ink);
 }
 
-.theme-btn svg { width: 0.9rem; height: 0.9rem; }
+.theme-btn svg,
+.theme-btn .lucide,
+.theme-btn [data-lucide] { width: 0.9rem; height: 0.9rem; }
 
 /* Navigation */
 .sidebar-nav {
@@ -576,6 +589,15 @@ details.panel > summary:hover { background: color-mix(in srgb, var(--paper-borde
 
 details.panel[open] > summary .chevron { transform: rotate(90deg); }
 
+.chevron,
+.chevron.lucide {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  transition: transform 0.25s var(--ease-out);
+}
+
 .panel-phase {
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -667,35 +689,65 @@ details.panel[open] > summary .chevron { transform: rotate(90deg); }
 
 .checklist label:hover { color: var(--ink); }
 
-.check-item {
-  appearance: none;
-  width: 1.1rem;
-  height: 1.1rem;
-  margin-top: 0.2rem;
+.check-wrap {
+  position: relative;
+  display: inline-flex;
+  width: 1.15rem;
+  height: 1.15rem;
   flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.check-box {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1.5px solid var(--paper-border-strong);
   border-radius: 3px;
   background: var(--paper-elevated);
-  cursor: pointer;
+  pointer-events: none;
   transition: background 0.15s, border-color 0.15s;
-  position: relative;
 }
 
-.check-item:checked {
+.check-wrap.is-checked .check-box {
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.check-item:checked::after {
-  content: '';
+.check-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.check-wrap.is-checked .check-icon {
+  opacity: 1;
+}
+
+.check-input,
+.check-item.check-input {
   position: absolute;
-  left: 3px;
-  top: 1px;
-  width: 5px;
-  height: 9px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+td .check-wrap {
+  margin-top: 0;
+  vertical-align: middle;
+}
+
+label > .check-wrap + span,
+label > .check-wrap ~ :not(.check-wrap) {
+  flex: 1;
 }
 
 .checklist-grid {
@@ -802,12 +854,15 @@ details.panel[open] > summary .chevron { transform: rotate(90deg); }
 .bullet-list li {
   display: flex;
   gap: 0.5rem;
+  align-items: flex-start;
   margin-bottom: 0.25rem;
 }
 
-.bullet-list li::before {
-  content: '→';
+.list-icon {
+  width: 0.85rem;
+  height: 0.85rem;
   color: var(--accent);
+  margin-top: 0.2rem;
   flex-shrink: 0;
 }
 
@@ -840,6 +895,19 @@ details.panel[open] > summary .chevron { transform: rotate(90deg); }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.question-group[open] > summary .question-chevron {
+  transform: rotate(180deg);
+}
+
+.question-chevron {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .question-group > summary::-webkit-details-marker { display: none; }
@@ -862,7 +930,33 @@ details.panel[open] > summary .chevron { transform: rotate(90deg); }
   margin-top: 1rem;
 }
 
+.checkpoint-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.checkpoint-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--checkpoint);
+}
+
 .checkpoint strong { font-weight: 600; }
+
+.icon-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.link-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
 
 .tag-optional {
   font-family: var(--font-mono);

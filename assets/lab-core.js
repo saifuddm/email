@@ -6,10 +6,10 @@
     function syncIcons() {
       const dark = document.documentElement.classList.contains('dark');
       document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-        btn.querySelectorAll('.icon-sun').forEach(function (el) {
+        btn.querySelectorAll('.icon-sun, .lucide-sun').forEach(function (el) {
           el.classList.toggle('hidden', !dark);
         });
-        btn.querySelectorAll('.icon-moon').forEach(function (el) {
+        btn.querySelectorAll('.icon-moon, .lucide-moon').forEach(function (el) {
           el.classList.toggle('hidden', dark);
         });
         var label = btn.querySelector('.theme-label');
@@ -76,6 +76,8 @@
   }
 
   function initCheckboxes(storageKey, migrateFn) {
+    if (typeof LabIcons !== 'undefined') LabIcons.refresh();
+
     function loadChecks() {
       try {
         return JSON.parse(localStorage.getItem(storageKey) || '{}');
@@ -101,12 +103,22 @@
     var state = migrateFn ? migrateFn(loadChecks()) : loadChecks();
 
     document.querySelectorAll('.check-item').forEach(function (el) {
-      if (state[el.dataset.id]) el.checked = true;
+      if (state[el.dataset.id]) {
+        el.checked = true;
+        var wrap = el.closest('.check-wrap');
+        if (wrap) wrap.classList.toggle('is-checked', true);
+      }
       el.addEventListener('change', function () {
         state[el.dataset.id] = el.checked;
         saveChecks(state);
         updateProgress();
+        var wrap = el.closest('.check-wrap');
+        if (wrap) wrap.classList.toggle('is-checked', el.checked);
       });
+    });
+    document.querySelectorAll('.check-wrap').forEach(function (wrap) {
+      var input = wrap.querySelector('.check-item');
+      if (input) wrap.classList.toggle('is-checked', input.checked);
     });
     updateProgress();
   }
