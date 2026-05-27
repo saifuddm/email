@@ -178,6 +178,27 @@
         <h2 class="section-title">Suggested learning path</h2>
         <p class="section-lead">Three tiers. Tier 1 builds on agentic-inbox directly; Tier 2 is product depth; Tier 3 is production hardening.</p>
 
+        <figure class="diagram-block adv">
+          <p class="block-label">Advanced learning path</p>
+          <pre class="mermaid">flowchart TB
+  V1[v1 checklist complete] --> T1
+  subgraph t1["Tier 1 · Agent stack"]
+    T1[AI agent + Workers AI]
+    A2[MCP /mcp endpoint]
+    T1 --> A2
+  end
+  T1 --> T2
+  subgraph t2["Tier 2 · Product"]
+    T2[Drafts · labels · filters · push]
+  end
+  T2 --> T3
+  subgraph t3["Tier 3 · Ops"]
+    T3[Queues · bounces · IMAP · JMAP · backup]
+  end
+          </pre>
+          <figcaption class="diagram-caption">Tiers are suggested order, not strict dependencies — pick depth by interest.</figcaption>
+        </figure>
+
         <details class="panel" open data-tier="tier1">
           <summary>
             <div><span class="panel-phase adv">Tier 1 · Weeks 1–2</span><p class="panel-title">Agent stack (study agentic-inbox as-is)</p></div>
@@ -218,6 +239,23 @@
             <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
+            <figure class="diagram-block adv">
+              <p class="block-label">Queue refactor (before → after)</p>
+              <pre class="mermaid">flowchart TB
+  subgraph before["Before · inline parse"]
+    B1[Email Worker] --> B2[Parse MIME in same invocation]
+    B2 --> B3[Write DO / DB]
+  end
+  subgraph after["After · queue consumer"]
+    A1[Email Worker] --> A2[(R2 raw only)]
+    A1 --> Q[Queue job]
+    Q --> A3[Consumer Worker]
+    A3 --> A4[Parse + write DB]
+    A3 -->|retry| Q
+  end
+              </pre>
+              <figcaption class="diagram-caption">Email Worker CPU budget is tight — offload parse to a consumer (adv-10).</figcaption>
+            </figure>
             <ol class="block-list">
               <li>Refactor inbound to Queue → consumer parse (GUIDE.md pattern)</li>
               <li>Bounce/complaint webhooks + suppression list + dashboard</li>
@@ -274,16 +312,31 @@
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script src="assets/lab-icons.js"></script>
   <script src="assets/lab-core.js"></script>
+  <script src="assets/lab-diagrams.js"></script>
   <script>
     const advSections = [
       { id:'adv-01', num:'01', title:'AI agent & Workers AI', tier:'tier1', phase:'Tier 1 · Agent stack', upstream:'workers/agent/, lib/tools.ts, lib/ai.ts, AgentSidebar.tsx',
+        diagram:`flowchart LR
+  UI[Agent sidebar · WebSocket] --> EA[EmailAgent DO]
+  EA --> TOOLS[tools.ts]
+  TOOLS --> MB[Mailbox DO]
+  TOOLS --> AI[Workers AI]
+  TOOLS -->|confirm| SEND[send_email]`,
+        diagramCaption:'Same tools.ts powers the agent and MCP — trace one tool end-to-end.',
         tasks:['Read Email for Agents blog post','Find EmailAgent Durable Object class — how is it keyed?','List all 9 tools in tools.ts and trace one end-to-end','Trigger auto-draft on inbound — where is it wired?','Customize agentSystemPrompt in mailbox settings','Observe confirm-before-send guard in send flow'],
         concepts:['AIChatAgent vs plain Workers AI fetch','Tool loop: read → draft → user confirms → send','Shared tools.ts used by agent AND MCP','Rate limiting on send (RateLimit DO)','verifyDraft() — what does it check?'],
         questions:[{g:'Architecture',q:['Draw: Browser WebSocket → EmailAgent DO → tools.ts → MailboxDO','Which Workers AI model is configured in wrangler.jsonc?','Where is chat history persisted — SQLite table or DO storage?','How does auto-draft on inbound differ from manual agent chat?']},{g:'Tools',q:['Name all 9 email tools and one-line purpose each','Which tools read vs write mail?','search_emails vs list_emails — when would the agent pick each?','send_email path — where is user confirmation enforced?']},{g:'Safety & UX',q:['What happens if agent calls send_email without confirmation?','Can agent access attachments? How?','Streaming markdown in sidebar — which library renders it?','Would you port agent to AWS? What replaces Workers AI?']}],
         checkpoints:['Listed 9 tools from memory','Sent mail only after explicit confirm','Explained EmailAgent vs MailboxDO split']},
       { id:'adv-02', num:'02', title:'MCP (Model Context Protocol)', tier:'tier1', phase:'Tier 1 · Agent stack', upstream:'workers/mcp/index.ts, MCPPanel.tsx, /mcp endpoint',
+        diagram:`flowchart LR
+  CURSOR[Cursor / Claude] -->|HTTPS + Access| MCP["/mcp · McpAgent"]
+  MCP --> TOOLS[tools.ts]
+  TOOLS --> MB[Mailbox DO]
+  UI[Browser UI] --> API[Hono API] --> MB`,
+        diagramCaption:'Cloudflare Access gates /mcp — document the trust boundary in Obsidian.',
         tasks:['Read MCPPanel.tsx — copy MCP URL for your deployment','Add MCP server in Cursor (or Claude Desktop) pointing to /mcp','Call list_mailboxes and get_email via MCP','Compare MCP tool definitions vs agent tools in tools.ts','Read trust boundary note in agentic-inbox README'],
         concepts:['McpAgent + McpServer from Agents SDK','Same business logic as agent — different response wrapper','Cloudflare Access is the only auth gate for /mcp','mailboxId parameter — no per-mailbox ACL','External AI tools can send mail if Access passes'],
         questions:[{g:'Setup',q:['Full MCP URL including domain?','Does Cursor need Cloudflare Access headers/cookies?','What tools are exposed over MCP vs agent only?','How does MCPPanel suggest configuring the client?']},{g:'Implementation',q:['EmailMCP class — extends what base?','mcpText vs mcpError vs mcpResult — when each?','Trace list_emails MCP call to MailboxDO','Error when mailboxId invalid — MCP response shape?']},{g:'Security',q:['Threat: compromised Cursor token + Access — impact?','Per-mailbox authorization — exists or not?','Would you expose MCP on AWS clone — how to auth?','MCP vs REST API for programmatic access — tradeoffs?']}],
@@ -343,6 +396,12 @@
     const tierLabels = { tier1: 'Agent stack', tier2: 'Product', tier3: 'Infrastructure' };
 
     function renderSection(s) {
+      const diagramHtml = s.diagram ? `
+          <figure class="diagram-block adv">
+            <p class="block-label">Workflow</p>
+            <pre class="mermaid">${s.diagram}</pre>
+            ${s.diagramCaption ? '<figcaption class="diagram-caption">'+s.diagramCaption+'</figcaption>' : ''}
+          </figure>` : '';
       const qHtml = s.questions.map(g => `
         <details class="question-group">
           <summary>${g.g} <span style="font-size:0.75rem;color:var(--ink-faint)">${g.q.length} questions</span></summary>
@@ -363,6 +422,7 @@
           <p class="section-meta">${s.phase} · ${s.upstream}</p>
         </div>
         <div class="section-card-body">
+          ${diagramHtml}
           <p class="block-label">What to do</p>
           <ol class="block-list">${s.tasks.map(t=>'<li>'+t+'</li>').join('')}</ol>
           <p class="block-label">Concepts to notice</p>
@@ -380,6 +440,8 @@
     }
 
     document.getElementById('adv-sections').innerHTML = advSections.map(renderSection).join('');
+
+    LabDiagrams.init();
 
     LabIcons.refresh();
     LabCore.initTheme();

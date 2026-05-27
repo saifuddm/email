@@ -511,6 +511,38 @@ h1, h2, h3, h4 {
 }
 .route-line.active { stroke: var(--cf); stroke-dasharray: none; }
 
+/* Mermaid workflow diagrams */
+.diagram-block {
+  margin: 1.25rem 0 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--paper-border-strong);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--paper-elevated) 85%, transparent);
+  overflow-x: auto;
+}
+
+.diagram-block .block-label {
+  margin-bottom: 0.75rem;
+}
+
+.diagram-block .mermaid {
+  display: flex;
+  justify-content: center;
+  min-width: min(100%, 280px);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.diagram-block .diagram-caption {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+.diagram-block.cf { border-color: color-mix(in srgb, var(--cf) 40%, var(--paper-border-strong)); }
+.diagram-block.aws { border-color: color-mix(in srgb, var(--aws) 40%, var(--paper-border-strong)); }
+.diagram-block.adv { border-color: color-mix(in srgb, var(--adv) 40%, var(--paper-border-strong)); }
+
 /* Cards */
 .card {
   background: var(--paper-elevated);

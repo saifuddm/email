@@ -109,6 +109,27 @@
           </svg>
         </div>
 
+        <figure class="diagram-block">
+          <p class="block-label">Study path workflow</p>
+          <pre class="mermaid">flowchart TB
+  subgraph v1["v1 checklist"]
+    V["Receive · list · read · send · reply · attach · archive · search"]
+  end
+  subgraph t1["Track 1 · Cloudflare"]
+    CF1[Deploy agentic-inbox] --> CF2[Trace inbound + outbound]
+    CF2 --> CF3[Minimal clone]
+  end
+  subgraph t2["Track 2 · AWS SES"]
+    AW1[Verify domain + DNS] --> AW2[Inbound S3 + Lambda]
+    AW2 --> AW3[API + UI v1]
+  end
+  CF3 --> v1
+  AW3 --> v1
+  v1 --> ADV[advanced.html]
+          </pre>
+          <figcaption class="diagram-caption">Complete Track 1 before Track 2. Both tracks target the same v1 feature set.</figcaption>
+        </figure>
+
         <div class="card-grid stagger">
           <div class="card cf">
             <div class="card-body">
@@ -222,6 +243,19 @@
           </summary>
           <div class="panel-body">
             <p style="margin-bottom:1rem">Trace inbound + outbound. Answer questions in sections <a href="#cf-02">02–06</a>.</p>
+            <figure class="diagram-block cf">
+              <p class="block-label">Cloudflare mail path</p>
+              <pre class="mermaid">flowchart LR
+  MTA[Internet MTA] --> MX[MX · Email Routing]
+  MX --> EW[Email Worker handler]
+  EW --> DO[Mailbox Durable Object]
+  DO --> R2[(R2 · raw MIME + attachments)]
+  DO --> SQL[(SQLite in DO)]
+  UI[Web UI] --> API[Hono /api] --> DO
+  API --> SEND[send_email binding] --> MTA
+              </pre>
+              <figcaption class="diagram-caption">Inbound: routing → Worker → DO. Outbound: UI → API → send_email.</figcaption>
+            </figure>
             <table class="data-table">
               <thead><tr><th>Topic</th><th>Files in clone</th></tr></thead>
               <tbody>
@@ -304,6 +338,21 @@
             <i data-lucide="chevron-right" class="chevron"></i>
           </summary>
           <div class="panel-body">
+            <figure class="diagram-block aws">
+              <p class="block-label">AWS inbound pipeline</p>
+              <pre class="mermaid">flowchart LR
+  MTA[Internet MTA] --> SES[SES receive · MX]
+  SES --> S3[(S3 · raw .eml)]
+  S3 --> SNS[SNS notification]
+  SNS --> L[Lambda · postal-mime]
+  L --> DDB[(DynamoDB metadata)]
+  L --> S3a[(S3 · attachments)]
+  UI[React UI] --> APIGW[API Gateway] --> L2[Lambda API]
+  L2 --> DDB
+  L2 --> SEND[SES SendRawEmail] --> MTA
+              </pre>
+              <figcaption class="diagram-caption">Receipt is async: S3 first, then Lambda. Outbound mirrors Cloudflare v1 goals.</figcaption>
+            </figure>
             <table class="data-table">
               <tbody>
                 <tr><td><code>2.4</code></td><td>Receipt rule → S3 → <a href="#aws-02">02</a></td></tr>
@@ -351,6 +400,31 @@
       <section id="compare" class="scroll-section">
         <h2 class="section-title">Cloudflare vs AWS</h2>
         <p class="section-lead">Reference mapping — fill detailed comparisons in Obsidian.</p>
+
+        <figure class="diagram-block">
+          <p class="block-label">Architecture mapping</p>
+          <pre class="mermaid">flowchart TB
+  subgraph CF["Cloudflare track"]
+    direction LR
+    C1[Email Routing] --> C2[Email Worker]
+    C2 --> C3[Mailbox DO + SQLite]
+    C2 --> C4[(R2)]
+    C5[Web UI] --> C6[Hono API] --> C3
+    C6 --> C7[send_email]
+  end
+  subgraph AWS["AWS track"]
+    direction LR
+    A1[SES receipt rule] --> A2[(S3 raw)]
+    A2 --> A3[Lambda parse]
+    A3 --> A4[(DynamoDB)]
+    A3 --> A5[(S3 bodies/attach)]
+    A6[React UI] --> A7[API Gateway] --> A8[Lambda API]
+    A8 --> A9[SendRawEmail]
+  end
+          </pre>
+          <figcaption class="diagram-caption">Same v1 concepts — different primitives. Use the table below for a column-by-column reference.</figcaption>
+        </figure>
+
         <div class="card" style="margin-bottom:1.5rem">
           <div class="table-head">Architecture mapping</div>
           <div class="table-wrap">
@@ -433,8 +507,10 @@
   </div>
 
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script src="assets/lab-icons.js"></script>
   <script src="assets/lab-core.js"></script>
+  <script src="assets/lab-diagrams.js"></script>
   <script>
     const cfSections = [
       { id:'cf-01', num:'01', title:'Setup & deploy', phase:'Track 1 · Phase 1', upstream:'agentic-inbox/README.md, wrangler.jsonc',
@@ -443,6 +519,14 @@
         questions:[{g:'DNS & domain',q:['Is your domain on Cloudflare as authoritative DNS? What breaks if not?','What MX records did Email Routing create? Where in dashboard?','Difference between Email Routing (inbound) and Email Sending (outbound)?']},{g:'Deploy & config',q:['List every binding in wrangler.jsonc and what each does','What happens if POLICY_AUD or TEAM_DOMAIN is wrong?','Why nodejs_compat compatibility flag?']},{g:'First mailbox',q:['What address did you create? Validated against DOMAINS?','Before Email Routing, can inbound mail reach the Worker?']}],
         checkpoints:['App loads behind Cloudflare Access','At least one mailbox created','Explain each wrangler.jsonc binding in one sentence']},
       { id:'cf-02', num:'02', title:'Inbound email routing', phase:'Track 1 · Phase 1+2', upstream:'workers/app.ts, workers/index.ts, email-helpers.ts',
+        diagram:`flowchart LR
+  MTA[Sender MTA] --> MX[Your MX · Email Routing]
+  MX --> EW["email() in Worker"]
+  EW --> PARSE[postal-mime]
+  PARSE --> DO[Mailbox DO stub]
+  DO --> R2[(R2 raw/)]
+  DO --> ROW[(messages row)]`,
+        diagramCaption:'Trace each arrow in code — section checkpoint asks you to redraw from memory.',
         tasks:['Email Routing catch-all → Worker','Send test email from Gmail','Confirm in UI within ~10s','Find email handler in code; trace receipt to storage'],
         concepts:['Email Workers vs HTTP Workers','25 MiB Routing limit','How Worker picks which mailbox'],
         questions:[{g:'Routing',q:['Draw inbound path: MTA → MX → Routing → Worker → DO → R2','What is a catch-all rule?','Does random-alias@yourdomain.com arrive?']},{g:'Code trace',q:['Which file exports email() handler?','What library parses MIME?','Step-by-step: raw bytes → DB → R2','How is to@domain mapped to Mailbox DO?','If MIME parse throws — mail lost or retried?']},{g:'Limits',q:['Email Worker CPU/memory limits? Why parse inline not Queue?','Large ~5MB attachment — where is raw .eml stored?']}],
@@ -458,6 +542,13 @@
         questions:[{g:'MIME',q:['postal-mime fields → DB columns vs R2?','Multipart text+HTML+attachments?','Where is snippet generated?','EmailIframe.tsx sandbox attributes?']},{g:'Threading',q:['In-Reply-To and References on Gmail reply?','Existing thread vs new thread logic?','Outbound threading headers — which function?','What does generateMessageId() do?','Threading intact both ways after app reply?']},{g:'Edge cases',q:['Email with no subject?','To + CC — to_json/cc_json storage?']}],
         checkpoints:['Gmail threading 3+ messages','Explain In-Reply-To vs References','Know HTML sandbox location']},
       { id:'cf-05', num:'05', title:'Outbound email sending', phase:'Track 1 · Phase 1+2', upstream:'email-sender.ts, wrangler.jsonc, workers/index.ts',
+        diagram:`flowchart LR
+  UI[Compose UI] --> API[POST /api/.../send]
+  API --> ES[email-sender.ts]
+  ES --> BIND[send_email binding]
+  BIND --> MTA[Recipient MTA]
+  ES --> DO[Persist Sent in DO]`,
+        diagramCaption:'Send can succeed while DB write fails — find the error handling in code.',
         tasks:['Confirm send_email binding','Read Email Service send docs','Send new message from UI','Find where sent mail persisted','Send with attachment'],
         concepts:['send_email binding vs REST API','From address verification','Sent folder same messages table?'],
         questions:[{g:'Sending',q:['Function that sends mail and its parameters?','Raw MIME or structured fields?','From address — verified domain?','Send succeeds but DB write fails — handled?']},{g:'Persistence',q:['direction value after send?','Threading headers stored same as inbound?','Compose UI and API endpoint?']},{g:'Deliverability',q:['Outbound attachment encoding?','Inbox or spam — SPF/DKIM/DMARC?','Email Sending beta limits for personal use?']}],
@@ -486,6 +577,14 @@
         questions:[{g:'Domain verification',q:['Which SES region and why?','All DNS records SES required?','Time until Verified?']},{g:'Sandbox',q:['Still in sandbox — send to whom?','Exit sandbox requirements?','Test send command — arrived?']},{g:'Comparison',q:['SES vs Cloudflare Routing setup — easier or harder?','Same domain MX on CF and AWS — conflict?']}],
         checkpoints:['Domain verified','DKIM+SPF+DMARC published','One successful test send']},
       { id:'aws-02', num:'02', title:'Inbound receipt rules', phase:'Track 2 · Phase 2', upstream:'0x4447_product_s3_email, serverless SES receive example',
+        diagram:`flowchart LR
+  MTA[Sender MTA] --> MX[SES inbound MX]
+  MX --> SES[Receipt rule]
+  SES --> S3[(S3 object · full MIME)]
+  S3 --> SNS[SNS · optional]
+  SNS --> L[Lambda trigger]
+  L --> DDB[(DynamoDB)]`,
+        diagramCaption:'Study question: which step has no Cloudflare equivalent?',
         tasks:['Create S3 bucket for raw mail','Create and activate receipt rule set','Rule: recipient → S3','Optional SNS on ObjectCreated','Send inbound test; confirm object in S3','Read SES receiving docs'],
         concepts:['Rule set vs rule','S3 object = raw MIME','SES receiving size limits'],
         questions:[{g:'Receipt rules',q:['Draw path: MTA → MX → SES → S3 → SNS → Lambda','Inbound MX records from SES?','Rule set vs rule — which active?','MX to both CF and SES?']},{g:'S3',q:['S3 key prefix for incoming?','Raw object — full RFC 5322 MIME?','IAM/bucket policy for read access?']},{g:'Triggers',q:['SNS topic and subscription?','Delay until object appears?','Missing step vs Cloudflare Email Worker?']}],
@@ -525,6 +624,12 @@
     function renderSection(s, track) {
       const headCls = track;
       const opt = s.optional ? '<span class="tag-optional">optional</span>' : '';
+      const diagramHtml = s.diagram ? `
+          <figure class="diagram-block ${headCls}">
+            <p class="block-label">Workflow</p>
+            <pre class="mermaid">${s.diagram}</pre>
+            ${s.diagramCaption ? '<figcaption class="diagram-caption">'+s.diagramCaption+'</figcaption>' : ''}
+          </figure>` : '';
       const qHtml = s.questions.map(g => `
         <details class="question-group">
           <summary>${g.g} <span style="font-size:0.75rem;color:var(--ink-faint)">${g.q.length} questions</span></summary>
@@ -544,6 +649,7 @@
           <p class="section-meta">${s.phase} · ${s.upstream}</p>
         </div>
         <div class="section-card-body">
+          ${diagramHtml}
           <p class="block-label">What to do</p>
           <ol class="block-list">${s.tasks.map(t=>'<li>'+t+'</li>').join('')}</ol>
           <p class="block-label">Concepts to notice</p>
@@ -562,6 +668,8 @@
 
     document.getElementById('cf-sections').innerHTML = cfSections.map(s => renderSection(s, 'cf')).join('');
     document.getElementById('aws-sections').innerHTML = awsSections.map(s => renderSection(s, 'aws')).join('');
+
+    LabDiagrams.init();
 
     LabIcons.refresh();
     LabCore.initTheme();
