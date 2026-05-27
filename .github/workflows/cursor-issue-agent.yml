@@ -1,0 +1,111 @@
+name: Cursor Issue Agent
+
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+jobs:
+  trigger-cursor-automation:
+    if: |
+      github.actor == 'saifuddm' && (
+        github.event_name == 'issues' ||
+        (
+          github.event_name == 'issue_comment' &&
+          github.event.issue.pull_request &&
+          contains(github.event.issue.labels.*.name, 'cursor-agent')
+        )
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      pull-requests: read
+    steps:
+      - name: Build webhook payload
+        id: payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
+          PR_URL: ${{ github.event.issue.pull_request.url }}
+        run: |
+          if [ "$EVENT_NAME" = "issues" ]; then
+            EVENT_TYPE="issue_opened"
+          else
+            EVENT_TYPE="clarification_comment"
+          fi
+
+          PR_DETAILS="null"
+          if [ -n "$PR_URL" ]; then
+            PR_NUMBER="$ISSUE_NUMBER"
+            PR_DETAILS=$(gh api "repos/$REPO/pulls/$PR_NUMBER" \
+              --jq '{number: .number, url: .html_url, head_ref: .head.ref, base_ref: .base.ref}')
+          fi
+
+          PAYLOAD=$(jq -n \
+            --arg event_type "$EVENT_TYPE" \
+            --arg repository "$REPO" \
+            --arg actor "${{ github.actor }}" \
+            --arg workflow_run_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --argjson issue_number "$ISSUE_NUMBER" \
+            --arg issue_title "$ISSUE_TITLE" \
+            --arg issue_body "$ISSUE_BODY" \
+            --arg issue_url "$ISSUE_URL" \
+            --argjson issue_labels "$ISSUE_LABELS" \
+            --arg comment_body "$COMMENT_BODY" \
+            --arg comment_url "$COMMENT_URL" \
+            --argjson pull_request "$PR_DETAILS" \
+            '{
+              event_type: $event_type,
+              repository: $repository,
+              actor: $actor,
+              workflow_run_url: $workflow_run_url,
+              issue: {
+                number: $issue_number,
+                title: $issue_title,
+                body: $issue_body,
+                url: $issue_url,
+                labels: $issue_labels
+              },
+              comment: (
+                if $comment_body == "" then null
+                else { body: $comment_body, url: $comment_url }
+                end
+              ),
+              pull_request: $pull_request
+            }')
+
+          printf '%s' "$PAYLOAD" > /tmp/cursor-payload.json
+
+      - name: Trigger Cursor automation
+        env:
+          CURSOR_WEBHOOK_URL: ${{ secrets.CURSOR_WEBHOOK_URL }}
+          CURSOR_WEBHOOK_AUTH: ${{ secrets.CURSOR_WEBHOOK_AUTH }}
+        run: |
+          if [ -z "$CURSOR_WEBHOOK_URL" ] || [ -z "$CURSOR_WEBHOOK_AUTH" ]; then
+            echo "Missing CURSOR_WEBHOOK_URL or CURSOR_WEBHOOK_AUTH repository secrets."
+            exit 1
+          fi
+
+          HTTP_STATUS=$(curl --silent --show-error --output /tmp/cursor-response.txt --write-out "%{http_code}" \
+            -X POST "$CURSOR_WEBHOOK_URL" \
+            -H "Authorization: Bearer $CURSOR_WEBHOOK_AUTH" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/cursor-payload.json)
+
+          echo "Cursor webhook response ($HTTP_STATUS):"
+          cat /tmp/cursor-response.txt
+
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "Cursor webhook request failed."
+            exit 1
+          fi
