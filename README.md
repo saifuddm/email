@@ -4,7 +4,7 @@ Structured study workspace for building a personal mailbox on **Cloudflare** (vi
 
 ## Start here
 
-Open **[study-plan.html](./study-plan.html)** in your browser — interactive study plan with dark mode, progress checkboxes, and all 16 study sections.
+Open **[index.html](./index.html)** in your browser — interactive study plan with dark mode, progress checkboxes, and all 16 study sections.
 
 Answer study questions in your **Obsidian** notebook (or any notes app).
 
@@ -12,7 +12,7 @@ Answer study questions in your **Obsidian** notebook (or any notes app).
 
 ```
 email/
-├── study-plan.html        ← primary study plan (HTML)
+├── index.html             ← primary study plan (HTML)
 ├── GUIDE.md               ← original Cloudflare design notes & gotchas
 ├── cloudflare/
 │   └── agentic-inbox/     ← cloned upstream reference app
@@ -31,4 +31,4 @@ Complete Track 1 before Track 2.
 
 - [cloudflare/agentic-inbox](https://github.com/cloudflare/agentic-inbox) — cloned in `cloudflare/agentic-inbox/`
 - [Email for Agents (blog)](https://blog.cloudflare.com/email-for-agents/)
-- No official AWS inbox app — partial repos listed in `study-plan.html` → External repos
+- No official AWS inbox app — partial repos listed in `index.html` → External repos

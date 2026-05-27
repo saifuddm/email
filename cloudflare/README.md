@@ -3,7 +3,7 @@
 | Path | Purpose |
 |------|---------|
 | `agentic-inbox/` | Cloned [cloudflare/agentic-inbox](https://github.com/cloudflare/agentic-inbox) |
-| Study sections 01–08 | In [study-plan.html](../study-plan.html) (sidebar: Track 1) |
+| Study sections 01–08 | In [index.html](../index.html) (sidebar: Track 1) |
 
 ## Quick start
 

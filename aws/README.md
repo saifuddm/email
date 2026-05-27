@@ -3,7 +3,7 @@
 | Path | Purpose |
 |------|---------|
 | `inbox/` | Your SES mailbox (build during Track 2) |
-| Study sections 01–08 | In [study-plan.html](../study-plan.html) (sidebar: Track 2) |
+| Study sections 01–08 | In [index.html](../index.html) (sidebar: Track 2) |
 
 Finish Cloudflare Track 1 Phase 2 before starting AWS sections.
 
@@ -17,4 +17,4 @@ Finish Cloudflare Track 1 Phase 2 before starting AWS sections.
 - UI: React
 - Auth: Cognito or API key
 
-See `study-plan.html` → Track 2 for phases and milestones.
+See `index.html` → Track 2 for phases and milestones.
