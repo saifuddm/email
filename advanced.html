@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Learning Lab — Advanced Study Guide</title>
+  <script>
+    (function () {
+      var t = localStorage.getItem('email-study-plan-theme');
+      if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches))
+        document.documentElement.classList.add('dark');
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cf: { DEFAULT: '#f6821f', dark: '#e56f00', light: '#fff7ed' },
+            aws: { DEFAULT: '#ff9900', dark: '#ec7211', light: '#fffbeb' },
+            adv: { DEFAULT: '#6366f1', dark: '#4f46e5', light: '#eef2ff' },
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    details > summary { list-style: none; cursor: pointer; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] > summary .chevron { transform: rotate(90deg); }
+    .nav-link.active { background: rgb(241 245 249); border-left-color: rgb(99 102 241); font-weight: 600; }
+    @media (max-width: 1023px) {
+      #sidebar.open { transform: translateX(0); }
+    }
+    .dark { color-scheme: dark; }
+    .dark body { background-color: #020617; color: #e2e8f0; }
+    .dark #sidebar, .dark .bg-white { background-color: #0f172a !important; }
+    .dark .border-slate-200, .dark .border-slate-100 { border-color: #334155 !important; }
+    .dark .bg-slate-50 { background-color: #020617 !important; }
+    .dark .bg-slate-100, .dark .bg-slate-200 { background-color: #1e293b !important; }
+    .dark .text-slate-900 { color: #f1f5f9 !important; }
+    .dark .text-slate-800, .dark .text-slate-700 { color: #e2e8f0 !important; }
+    .dark .text-slate-600 { color: #cbd5e1 !important; }
+    .dark .text-slate-500, .dark .text-slate-400 { color: #94a3b8 !important; }
+    .dark .hover\:bg-slate-50:hover { background-color: #1e293b !important; }
+    .dark .nav-link.active { background: #1e293b !important; border-left-color: #818cf8 !important; color: #f1f5f9; }
+    .dark .bg-cf-light, .dark .bg-orange-50 { background-color: #431407 !important; }
+    .dark .bg-aws-light, .dark .bg-amber-50 { background-color: #451a03 !important; }
+    .dark .bg-adv-light, .dark .bg-indigo-50 { background-color: #1e1b4b !important; }
+    .dark .text-cf-dark { color: #fdba74 !important; }
+    .dark .text-aws-dark { color: #fcd34d !important; }
+    .dark .text-adv-dark { color: #a5b4fc !important; }
+    .dark .bg-emerald-50 { background-color: #022c22 !important; }
+    .dark .text-emerald-800 { color: #6ee7b7 !important; }
+    .dark .bg-indigo-50 { background-color: #1e1b4b !important; border-color: #3730a3 !important; }
+    .dark .text-indigo-900 { color: #c7d2fe !important; }
+    .dark .bg-amber-50.border-amber-200 { background-color: #451a03 !important; border-color: #92400e !important; }
+    .dark .text-amber-900 { color: #fde68a !important; }
+    .dark .bg-amber-100 { background-color: #78350f !important; }
+    .dark #toolbar-bar { background-color: rgba(2, 6, 23, 0.95) !important; border-color: #334155 !important; }
+    .dark #menu-toggle, .dark .toolbar-btn, .dark #tier-filter {
+      background-color: #1e293b !important; color: #e2e8f0 !important; border-color: #475569 !important;
+    }
+    .dark .question-group { background-color: #0f172a !important; border-color: #334155 !important; }
+    .dark code { background-color: #1e293b !important; color: #e2e8f0 !important; }
+    .dark input[type=checkbox] { background-color: #1e293b; border-color: #475569; }
+    .dark .divide-slate-50 > :not([hidden]) ~ :not([hidden]),
+    .dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) { border-color: #334155; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased transition-colors duration-200">
+
+  <button id="menu-toggle" class="lg:hidden fixed top-4 left-4 z-50 bg-white border border-slate-200 rounded-lg p-2 shadow-sm" aria-label="Toggle menu">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <button id="theme-toggle-mobile" type="button" class="theme-toggle lg:hidden fixed top-4 right-4 z-50 bg-white border border-slate-200 rounded-lg p-2 shadow-sm" aria-label="Toggle dark mode">
+    <svg class="icon-sun w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+    <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+  </button>
+
+  <div class="flex min-h-screen">
+
+    <aside id="sidebar" class="fixed lg:sticky top-0 left-0 z-40 w-72 h-screen bg-white border-r border-slate-200 overflow-y-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-200">
+      <div class="p-5 border-b border-slate-100">
+        <a href="index.html" class="text-xs text-adv-dark hover:underline">← Back to v1 study plan</a>
+        <h1 class="text-lg font-bold text-slate-900 mt-2">Advanced topics</h1>
+        <p class="text-xs text-slate-500 mt-1">Beyond v1 · answer in Obsidian</p>
+        <div class="mt-3">
+          <div class="flex justify-between text-xs text-slate-500 mb-1">
+            <span>Progress</span>
+            <span id="progress-text">0%</span>
+          </div>
+          <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-300" style="width:0%"></div>
+          </div>
+        </div>
+        <button id="theme-toggle" type="button" class="theme-toggle mt-4 w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Toggle dark mode">
+          <svg class="icon-sun w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg class="icon-moon w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <span class="theme-label">Dark mode</span>
+        </button>
+      </div>
+      <nav class="p-3 space-y-1 text-sm" id="sidebar-nav">
+        <a href="#overview" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Overview</a>
+        <a href="#phases" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Learning path</a>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-adv-dark uppercase tracking-wide">Agent &amp; automation</p>
+        <a href="#adv-01" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">01 AI agent</a>
+        <a href="#adv-02" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">02 MCP</a>
+        <a href="#adv-03" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">03 Filters &amp; rules</a>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-adv-dark uppercase tracking-wide">Scale &amp; access</p>
+        <a href="#adv-04" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">04 Multi-user</a>
+        <a href="#adv-05" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">05 IMAP / SMTP</a>
+        <a href="#adv-06" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">06 Calendar &amp; contacts</a>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-adv-dark uppercase tracking-wide">Product polish</p>
+        <a href="#adv-07" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">07 Drafts &amp; labels</a>
+        <a href="#adv-08" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">08 Realtime &amp; push</a>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-adv-dark uppercase tracking-wide">Ops &amp; standards</p>
+        <a href="#adv-09" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">09 Deliverability</a>
+        <a href="#adv-10" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">10 Queues &amp; reliability</a>
+        <a href="#adv-11" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">11 Backup &amp; export</a>
+        <a href="#adv-12" class="nav-link block px-3 py-1.5 pl-6 rounded-r border-l-2 border-transparent hover:bg-slate-50 text-slate-600">12 JMAP reference</a>
+        <p class="px-3 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wide">Reference</p>
+        <a href="#resources" class="nav-link block px-3 py-2 rounded-r border-l-2 border-transparent hover:bg-slate-50">Resources</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 lg:ml-0 p-6 lg:p-10 max-w-5xl mx-auto w-full pt-16 lg:pt-10">
+
+      <div id="toolbar-bar" class="flex flex-wrap gap-2 mb-8 sticky top-0 z-30 bg-slate-50/95 backdrop-blur py-3 -mx-2 px-2 border-b border-slate-200 lg:border-0 lg:static lg:bg-transparent lg:py-0 lg:mb-8">
+        <button onclick="expandAll(true)" class="toolbar-btn px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg hover:bg-slate-50">Expand all</button>
+        <button onclick="expandAll(false)" class="toolbar-btn px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg hover:bg-slate-50">Collapse all</button>
+        <select id="tier-filter" class="px-3 py-1.5 text-xs font-medium bg-white border border-slate-200 rounded-lg">
+          <option value="all">All tiers</option>
+          <option value="tier1">Tier 1 — agent stack</option>
+          <option value="tier2">Tier 2 — product features</option>
+          <option value="tier3">Tier 3 — infrastructure</option>
+        </select>
+      </div>
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="mb-16 scroll-mt-8">
+        <div class="mb-6">
+          <span class="inline-block px-2 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-800 rounded">After v1</span>
+          <h2 class="text-3xl font-bold text-slate-900 mt-2">Advanced study guide</h2>
+          <p class="text-slate-600 mt-2 max-w-2xl">Topics deliberately excluded from the <a href="index.html" class="text-adv-dark underline">v1 checklist</a>. Work through these once you can send, receive, thread, search, and archive mail in your own UI.</p>
+        </div>
+
+        <div class="bg-adv-light border border-indigo-200 rounded-xl p-5 mb-8">
+          <h3 class="font-semibold text-adv-dark">Prerequisite</h3>
+          <p class="text-sm text-slate-600 mt-1">Complete the v1 feature checklist on at least one track (Cloudflare or AWS). The advanced modules assume you understand MIME parsing, threading headers, mailbox storage, and auth boundaries.</p>
+        </div>
+
+        <!-- Advanced checklist -->
+        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-8">
+          <h3 class="text-lg font-semibold mb-1">Advanced feature checklist</h3>
+          <p class="text-sm text-slate-500 mb-4">Pick what matters to you — not everything is required. Checkboxes save in your browser.</p>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Agent &amp; automation</h4>
+              <ul class="space-y-2" data-checklist="adv">
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-agent" /> AI agent reads inbox and drafts replies (confirm-before-send)</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-mcp" /> MCP server exposes email tools to Cursor / Claude Code</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-filters" /> Inbound filter rules (move, label, forward, auto-archive)</label></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Scale &amp; access</h4>
+              <ul class="space-y-2">
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-multi" /> Multi-user: per-user mailboxes and authorization</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-imap" /> IMAP gateway (Thunderbird / Apple Mail read-only)</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-caldav" /> CalDAV / CardDAV or read-only calendar/contact sync</label></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Product polish</h4>
+              <ul class="space-y-2">
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-drafts" /> Drafts with autosave</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-labels" /> Custom labels / folders beyond inbox·archive·trash</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-push" /> Realtime new-mail indicator (SSE or Web Push)</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-aliases" /> Alias management UI (multiple addresses → one mailbox)</label></li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Ops &amp; standards</h4>
+              <ul class="space-y-2">
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-bounce" /> Bounce / complaint dashboard and suppression list</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-queue" /> Queue-based inbound parse with retries</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-export" /> Export mailbox to mbox / backup to cold storage</label></li>
+                <li><label class="flex items-start gap-3 cursor-pointer"><input type="checkbox" class="check-item mt-1 rounded border-slate-300" data-id="adv-jmap" /> Read JMAP spec; map your schema to JMAP objects</label></li>
+              </ul>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mt-4 border-t border-slate-100 pt-3">These were listed as <strong>out of scope v1</strong> on the main study plan: AI agent, MCP, multi-user, IMAP/SMTP, calendar/contacts — plus v1.1 candidates from <code class="text-xs bg-slate-100 px-1 rounded">GUIDE.md</code>.</p>
+        </div>
+
+        <!-- Topic map -->
+        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-8">
+          <div class="px-6 py-4 bg-slate-50 border-b border-slate-200">
+            <h3 class="font-semibold">What each topic unlocks</h3>
+          </div>
+          <table class="w-full text-sm">
+            <thead><tr class="border-b bg-slate-50/50"><th class="text-left px-6 py-3 text-slate-500">Topic</th><th class="text-left px-6 py-3 text-slate-500">Why it matters</th><th class="text-left px-6 py-3 text-slate-500">Reference in repo</th></tr></thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr><td class="px-6 py-3 font-medium">AI agent</td><td class="px-6 py-3 text-slate-600">Summarize threads, draft replies, triage inbox without leaving the UI</td><td class="px-6 py-3 font-mono text-xs">agentic-inbox/workers/agent/</td></tr>
+              <tr><td class="px-6 py-3 font-medium">MCP</td><td class="px-6 py-3 text-slate-600">Let coding agents (Cursor, Claude) operate on mail programmatically</td><td class="px-6 py-3 font-mono text-xs">workers/mcp/, /mcp endpoint</td></tr>
+              <tr><td class="px-6 py-3 font-medium">Multi-user</td><td class="px-6 py-3 text-slate-600">Separate mailboxes, per-user auth, no shared Access policy</td><td class="px-6 py-3 text-slate-600">Design from scratch; cf-07 as contrast</td></tr>
+              <tr><td class="px-6 py-3 font-medium">IMAP/SMTP</td><td class="px-6 py-3 text-slate-600">Native clients, offline sync, mobile mail apps</td><td class="px-6 py-3 text-slate-600">Schema must plan UID + folder state</td></tr>
+              <tr><td class="px-6 py-3 font-medium">Calendar/contacts</td><td class="px-6 py-3 text-slate-600">Replace more of Google Workspace; ICS/vCard parsing</td><td class="px-6 py-3 text-slate-600">Out of agentic-inbox scope</td></tr>
+              <tr><td class="px-6 py-3 font-medium">Queues</td><td class="px-6 py-3 text-slate-600">Never lose mail on parse failure; decouple receipt from CPU-heavy work</td><td class="px-6 py-3 font-mono text-xs">GUIDE.md architecture</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- LEARNING PATH -->
+      <section id="phases" class="mb-16 scroll-mt-8">
+        <h2 class="text-2xl font-bold mb-2">Suggested learning path</h2>
+        <p class="text-slate-600 text-sm mb-6">Three tiers. Tier 1 builds on agentic-inbox directly; Tier 2 is product depth; Tier 3 is production hardening.</p>
+
+        <div class="space-y-4">
+          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" open data-tier="tier1">
+            <summary class="px-6 py-4 flex items-center justify-between">
+              <div><span class="text-xs font-semibold text-adv-dark">Tier 1 · Weeks 1–2</span><h3 class="font-semibold">Agent stack (study agentic-inbox as-is)</h3></div>
+              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </summary>
+            <div class="px-6 pb-6 border-t border-slate-100 pt-4 text-sm">
+              <ol class="list-decimal list-inside space-y-1 text-slate-700">
+                <li>Deploy agentic-inbox with Workers AI enabled</li>
+                <li>Trace the 9 email tools in <code class="text-xs bg-slate-100 px-1 rounded">workers/lib/tools.ts</code></li>
+                <li>Use the agent sidebar: summarize, search, draft — observe confirm-before-send</li>
+                <li>Connect Cursor to <code class="text-xs bg-slate-100 px-1 rounded">/mcp</code>; list mailboxes and read mail via MCP</li>
+                <li>Read <a href="https://blog.cloudflare.com/email-for-agents/" class="text-adv-dark underline">Email for Agents</a> blog post end to end</li>
+              </ol>
+              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> Agent drafted a reply you confirmed and sent; MCP tool call succeeded from Cursor.</p>
+            </div>
+          </details>
+
+          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" data-tier="tier2">
+            <summary class="px-6 py-4 flex items-center justify-between">
+              <div><span class="text-xs font-semibold text-adv-dark">Tier 2 · Weeks 3–5</span><h3 class="font-semibold">Product features on your clone</h3></div>
+              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </summary>
+            <div class="px-6 pb-6 border-t border-slate-100 pt-4 text-sm">
+              <ol class="list-decimal list-inside space-y-1 text-slate-700">
+                <li>Drafts table + autosave debounce in compose UI</li>
+                <li>Custom labels (many-to-many message ↔ label)</li>
+                <li>Inbound filter rules evaluated in consumer Worker</li>
+                <li>SSE or Web Push for new-mail notifications</li>
+                <li>Alias CRUD: multiple addresses routing to one mailbox DO</li>
+              </ol>
+              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> Filter auto-archives a newsletter; draft survives page refresh; push fires on inbound test.</p>
+            </div>
+          </details>
+
+          <details class="bg-white border border-slate-200 rounded-xl shadow-sm group" data-tier="tier3">
+            <summary class="px-6 py-4 flex items-center justify-between">
+              <div><span class="text-xs font-semibold text-adv-dark">Tier 3 · Weeks 6+</span><h3 class="font-semibold">Infrastructure &amp; standards</h3></div>
+              <svg class="chevron w-5 h-5 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </summary>
+            <div class="px-6 pb-6 border-t border-slate-100 pt-4 text-sm">
+              <ol class="list-decimal list-inside space-y-1 text-slate-700">
+                <li>Refactor inbound to Queue → consumer parse (GUIDE.md pattern)</li>
+                <li>Bounce/complaint webhooks + suppression list + dashboard</li>
+                <li>Weekly backup Worker: export D1/R2 to cold bucket</li>
+                <li>Read RFC 8621 (JMAP); document gap analysis vs your schema</li>
+                <li>Spike: read-only IMAP SELECT/FETCH against your message store</li>
+                <li>Multi-user auth model (replace single Access policy)</li>
+              </ol>
+              <p class="text-sm bg-emerald-50 text-emerald-800 px-3 py-2 rounded-lg mt-4"><strong>Checkpoint:</strong> Parse retry survives intentional throw; mbox export opens in Thunderbird.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <div id="adv-sections" class="space-y-6 mb-16"></div>
+
+      <!-- RESOURCES -->
+      <section id="resources" class="mb-16 scroll-mt-8">
+        <h2 class="text-2xl font-bold mb-6">Resources</h2>
+        <div class="grid md:grid-cols-3 gap-4 text-sm">
+          <div class="bg-white border rounded-xl p-5">
+            <h3 class="font-semibold mb-3">Agent &amp; MCP</h3>
+            <ul class="space-y-2">
+              <li><a href="https://blog.cloudflare.com/email-for-agents/" class="text-adv-dark underline">Email for Agents</a></li>
+              <li><a href="https://developers.cloudflare.com/agents/" class="text-adv-dark underline">Cloudflare Agents SDK</a></li>
+              <li><a href="https://modelcontextprotocol.io/" class="text-adv-dark underline">MCP specification</a></li>
+              <li><a href="https://developers.cloudflare.com/workers-ai/" class="text-adv-dark underline">Workers AI</a></li>
+            </ul>
+          </div>
+          <div class="bg-white border rounded-xl p-5">
+            <h3 class="font-semibold mb-3">Protocols</h3>
+            <ul class="space-y-2">
+              <li><a href="https://www.rfc-editor.org/rfc/rfc8621.html" class="text-adv-dark underline">RFC 8621 — JMAP Mail</a></li>
+              <li><a href="https://www.rfc-editor.org/rfc/rfc3501.html" class="text-adv-dark underline">RFC 3501 — IMAP4</a></li>
+              <li><a href="https://www.rfc-editor.org/rfc/rfc5321.html" class="text-adv-dark underline">RFC 5321 — SMTP</a></li>
+              <li><a href="https://www.rfc-editor.org/rfc/rfc8617.html" class="text-adv-dark underline">RFC 8617 — ARC</a></li>
+              <li><a href="https://datatracker.ietf.org/doc/html/rfc4791" class="text-adv-dark underline">RFC 4791 — CalDAV</a></li>
+            </ul>
+          </div>
+          <div class="bg-white border rounded-xl p-5">
+            <h3 class="font-semibold mb-3">In this repo</h3>
+            <ul class="space-y-2">
+              <li><a href="index.html" class="text-adv-dark underline">v1 study plan</a></li>
+              <li><a href="GUIDE.md" class="text-adv-dark underline">GUIDE.md</a> — architecture &amp; v1.1 list</li>
+              <li><code class="text-xs bg-slate-100 px-1 rounded">cloudflare/agentic-inbox/</code></li>
+              <li>index.html § cf-08 — AI agent questions</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="text-center text-xs text-slate-400 pb-10">
+        Advanced topics · Checkboxes persist in localStorage · <a href="index.html" class="underline">Back to v1 plan</a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const advSections = [
+      { id:'adv-01', num:'01', title:'AI agent & Workers AI', tier:'tier1', phase:'Tier 1 · Agent stack', upstream:'workers/agent/, lib/tools.ts, lib/ai.ts, AgentSidebar.tsx',
+        tasks:['Read Email for Agents blog post','Find EmailAgent Durable Object class — how is it keyed?','List all 9 tools in tools.ts and trace one end-to-end','Trigger auto-draft on inbound — where is it wired?','Customize agentSystemPrompt in mailbox settings','Observe confirm-before-send guard in send flow'],
+        concepts:['AIChatAgent vs plain Workers AI fetch','Tool loop: read → draft → user confirms → send','Shared tools.ts used by agent AND MCP','Rate limiting on send (RateLimit DO)','verifyDraft() — what does it check?'],
+        questions:[{g:'Architecture',q:['Draw: Browser WebSocket → EmailAgent DO → tools.ts → MailboxDO','Which Workers AI model is configured in wrangler.jsonc?','Where is chat history persisted — SQLite table or DO storage?','How does auto-draft on inbound differ from manual agent chat?']},{g:'Tools',q:['Name all 9 email tools and one-line purpose each','Which tools read vs write mail?','search_emails vs list_emails — when would the agent pick each?','send_email path — where is user confirmation enforced?']},{g:'Safety & UX',q:['What happens if agent calls send_email without confirmation?','Can agent access attachments? How?','Streaming markdown in sidebar — which library renders it?','Would you port agent to AWS? What replaces Workers AI?']}],
+        checkpoints:['Listed 9 tools from memory','Sent mail only after explicit confirm','Explained EmailAgent vs MailboxDO split']},
+      { id:'adv-02', num:'02', title:'MCP (Model Context Protocol)', tier:'tier1', phase:'Tier 1 · Agent stack', upstream:'workers/mcp/index.ts, MCPPanel.tsx, /mcp endpoint',
+        tasks:['Read MCPPanel.tsx — copy MCP URL for your deployment','Add MCP server in Cursor (or Claude Desktop) pointing to /mcp','Call list_mailboxes and get_email via MCP','Compare MCP tool definitions vs agent tools in tools.ts','Read trust boundary note in agentic-inbox README'],
+        concepts:['McpAgent + McpServer from Agents SDK','Same business logic as agent — different response wrapper','Cloudflare Access is the only auth gate for /mcp','mailboxId parameter — no per-mailbox ACL','External AI tools can send mail if Access passes'],
+        questions:[{g:'Setup',q:['Full MCP URL including domain?','Does Cursor need Cloudflare Access headers/cookies?','What tools are exposed over MCP vs agent only?','How does MCPPanel suggest configuring the client?']},{g:'Implementation',q:['EmailMCP class — extends what base?','mcpText vs mcpError vs mcpResult — when each?','Trace list_emails MCP call to MailboxDO','Error when mailboxId invalid — MCP response shape?']},{g:'Security',q:['Threat: compromised Cursor token + Access — impact?','Per-mailbox authorization — exists or not?','Would you expose MCP on AWS clone — how to auth?','MCP vs REST API for programmatic access — tradeoffs?']}],
+        checkpoints:['Connected Cursor to /mcp successfully','Called at least 2 MCP tools','Documented trust boundary in Obsidian']},
+      { id:'adv-03', num:'03', title:'Filters & inbound rules', tier:'tier2', phase:'Tier 2 · Product', upstream:'GUIDE.md v1.1, SES receipt rules (AWS parallel)',
+        tasks:['Design filters table: conditions (from, subject, to) + actions (move, label, forward, delete)','Implement rule evaluation in inbound consumer (after parse, before UI)','Test: newsletter From → auto-archive','Test: subject contains [urgent] → label + keep in inbox','Document evaluation order when multiple rules match'],
+        concepts:['Run rules in consumer Worker, not Email Worker (CPU budget)','Sieve-like language vs simple JSON rules','Idempotency — same message must not re-run rules on retry','AWS parallel: Lambda after parse, or SES receipt rule actions'],
+        questions:[{g:'Design',q:['Store rules per mailbox or globally?','Can users create rules from UI or config-only v1?','Match on headers only or body snippet too?','Action: forward to external address — deliverability implications?']},{g:'Implementation',q:['Where in inbound pipeline do rules run?','Rule conflicts — first match vs accumulate labels?','How log which rule fired for debugging?','Filter on attachment presence — feasible?']},{g:'Comparison',q:['Gmail filters vs your minimal rules — gap list?','Cloudflare Email Routing rules vs in-app filters — overlap?','SES receipt rule S3 action vs in-app filter — when each?']}],
+        checkpoints:['One auto-archive rule works on live mail','Rule audit log or debug flag exists','Documented rule schema']},
+      { id:'adv-04', num:'04', title:'Multi-user & authorization', tier:'tier3', phase:'Tier 3 · Infrastructure', upstream:'GUIDE.md users table, cf-07 Access contrast',
+        tasks:['Read agentic-inbox README trust model — single Access policy, all mailboxes','Design users + memberships: user_id ↔ mailbox_id with role','Replace or supplement Cloudflare Access with per-user sessions','Ensure API routes check mailbox ownership before DO stub','Plan invitation / registration flow (even if manual seed first)'],
+        concepts:['agentic-inbox: Access JWT = gate to everything','Multi-tenant: row-level or DO-level isolation','Passkey per user (WebAuthn) from GUIDE.md','AWS: Cognito user pools + custom claims for mailbox access'],
+        questions:[{g:'Model',q:['One DO per mailbox still works for multi-user?','Shared mailbox (team inbox) — different schema?','Alias addresses — same user or cross-user?','Admin role — can read all mailboxes?']},{g:'Auth',q:['Keep Cloudflare Access AND add app-level auth?','JWT claims: which fields identify allowed mailboxes?','Magic-link login via your own outbound — flow?','Session revocation — how?']},{g:'Threat model',q:['User A guesses mailboxId UUID — blocked how?','MCP with multi-user — per-user tokens?','Presigned attachment URLs — scoped to user session?']}],
+        checkpoints:['Auth model documented with diagram','One API route enforces ownership','Contrast table: single-user vs multi-user']},
+      { id:'adv-05', num:'05', title:'IMAP & SMTP gateway', tier:'tier3', phase:'Tier 3 · Infrastructure', upstream:'RFC 3501, RFC 5321, GUIDE.md open questions',
+        tasks:['Read IMAP SELECT, FETCH, UID commands — minimal read-only subset','Design schema additions: imap_uid per message per folder, modseq optional','Spike: Worker or separate service speaking IMAP over TLS','Map folder names to your folder enum','SMTP submission: even harder — defer or use provider relay?'],
+        concepts:['IMAP UID validity and UID per folder','FLAGS (\\Seen \\Answered \\Deleted) sync back to your DB','SMTP submission ≠ inbound SMTP — outbound is usually REST/API','Native clients expect IDLE for push — complex on Workers'],
+        questions:[{g:'Scope',q:['Read-only IMAP first — sufficient for learning?','Which clients to test: Thunderbird, Apple Mail, iOS?','Full sync vs on-demand FETCH — storage tradeoff?','Can you implement IMAP in a Worker or need long-lived TCP?']},{g:'Schema',q:['Tables/columns needed for UID mapping?','DELETE in IMAP → your archive/trash folder?','Threading in IMAP (THREAD extension) — needed?','Body fetch: literal from R2 vs cached in DO?']},{g:'Alternatives',q:['JMAP instead of IMAP for modern clients?','Keep web-only + export mbox instead of IMAP?','Use third-party IMAP gateway reading your API?']}],
+        checkpoints:['UID schema sketched','Listed IMAP commands you would implement first','Decision: build vs defer IMAP']},
+      { id:'adv-06', num:'06', title:'Calendar & contacts', tier:'tier3', phase:'Tier 3 · Optional', upstream:'RFC 4791 CalDAV, RFC 6352 CardDAV, ICS/vCard parsers',
+        tasks:['Inventory what Workspace gives you beyond mail','Parse .ics attachment from real meeting invite','Parse vCard from email signature (optional stretch)','Read CalDAV/CardDAV at high level — same auth as mail?','Decide: build, integrate (e.g. external CalDAV server), or skip'],
+        concepts:['Meeting invites often arrive as text/calendar MIME parts','Reply-with-accept/decline — different from mail reply','Contacts ≠ From address book — CardDAV sync model','Completely separate product surface from inbox'],
+        questions:[{g:'Scope',q:['Minimum useful calendar feature for personal use?','Read-only ICS viewer in mail UI — enough?','Google Calendar migration — export format?','Shared calendars — multi-user dependency?']},{g:'Technical',q:['Store events in D1 or separate DO?','Recurring events (RRULE) — parser choice?','Contact dedup by email address?','CalDAV on Cloudflare — feasible?']}],
+        checkpoints:['Rendered one ICS invite in UI or Obsidian notes','Explicit build/skip/defer decision documented']},
+      { id:'adv-07', num:'07', title:'Drafts, labels & folders', tier:'tier2', phase:'Tier 2 · Product', upstream:'shared/folders.ts, GUIDE.md v1.1',
+        tasks:['Add drafts table: body, subject, to, updated_at, mailbox_id','Autosave compose every N seconds (debounced PUT)','Custom labels: labels + message_labels junction table','UI: apply/remove label; filter inbox by label','Compare with agentic-inbox folder enum — extend or replace?'],
+        concepts:['Draft ≠ scheduled send — separate feature','Gmail labels vs IMAP folders — many-to-many vs one-folder','Normalized subject already used for threading','Starred/flagged as boolean or label?'],
+        questions:[{g:'Drafts',q:['Draft keyed by draft_id or single compose session?','Attachment drafts — store in R2 with draft ref?','Send draft — delete draft row after send?','Conflict if draft open on two tabs?']},{g:'Labels',q:['System folders (inbox/sent/trash) vs user labels?','Can one message have inbox + custom label simultaneously?','Search across labels — query shape?','Export labels in mbox — possible?']},{g:'UI',q:['Drag-drop to label — v1.1 or later?','Folder sidebar performance with 50+ labels?']}],
+        checkpoints:['Draft survives browser refresh','At least 2 custom labels work','Message in inbox + label simultaneously']},
+      { id:'adv-08', num:'08', title:'Realtime notifications & push', tier:'tier2', phase:'Tier 2 · Product', upstream:'GUIDE.md SSE via DO, Web Push API',
+        tasks:['Implement Mailbox DO → SSE endpoint for new mail events','Wire UI to EventSource; update inbox badge on event','Optional: Web Push subscription + VAPID keys in Worker','Compare polling (current) vs SSE vs Web Push latency','Test notification when tab backgrounded'],
+        concepts:['SSE simpler than WebSocket for one-way server→client','DO can hold SSE connections per mailbox','Web Push needs service worker on frontend','Email Worker cannot hold long connections — notify from consumer'],
+        questions:[{g:'SSE',q:['Which DO method broadcasts new mail?','Reconnect backoff when SSE drops?','Multiple tabs — duplicate events ok?','Auth on SSE endpoint — same cookie as API?']},{g:'Web Push',q:['Store push subscriptions where?','Payload size limits — title + snippet only?','iOS Web Push requirements?','User opt-in UX?']},{g:'Alternatives',q:['Poll every 30s — good enough for personal use?','Mobile native app — different channel entirely?']}],
+        checkpoints:['New test email updates UI without manual refresh','SSE or push documented in architecture diagram']},
+      { id:'adv-09', num:'09', title:'Deliverability deep dive', tier:'tier3', phase:'Tier 3 · Ops', upstream:'GUIDE.md DNS, aws-07 bounces, RFC 8617 ARC',
+        tasks:['Document current SPF/DKIM/DMARC for your domain','Tighten DMARC: p=none → quarantine → reject (timeline)','Wire bounce/complaint webhooks (CF or SES SNS)','Build suppression list — block sends to hard-bounced addresses','Read RFC 8617 ARC — when needed for forwarding'],
+        concepts:['Warmup: first month expect spam folder','Hard bounce vs soft bounce vs complaint (FBL)','SES simulator addresses for testing','ARC seals chain when you forward mail — DMARC alignment'],
+        questions:[{g:'DNS',q:['SPF include strings for CF vs SES — both if split?','DKIM key rotation — process?','DMARC rua reports — where do they go?','BIMI — worth it for personal domain?']},{g:'Monitoring',q:['Dashboard for bounce rate over time?','Alert if complaint rate exceeds threshold?','Compare CF Email Service vs SES reputation tools?']},{g:'Practice',q:['Send to mail-tester.com — score and fixes?','Forward inbound to Gmail — break DMARC?','List-Unsubscribe header for bulk — relevant?']}],
+        checkpoints:['Bounce webhook logged at least one event','Suppression list prevents resend to hard bounce','DMARC policy documented with target dates']},
+      { id:'adv-10', num:'10', title:'Queues & inbound reliability', tier:'tier3', phase:'Tier 3 · Ops', upstream:'GUIDE.md queue architecture, Cloudflare Queues docs',
+        tasks:['Draw current inbound path — single Worker parse inline?','Refactor: Email Worker streams raw to R2, enqueues job only','Consumer Worker: fetch R2, parse, write DB, ack/retry','Inject failure — confirm message retries and is not lost','Compare with agentic-inbox — does it parse inline or queue?'],
+        concepts:['Email Worker: 50ms CPU, 128MB — parse can exceed','Enqueue-first = at-least-once delivery to consumer','Dead letter queue for poison MIME messages','Idempotent consumer writes (same message_id)'],
+        questions:[{g:'Architecture',q:['Queue message payload — R2 key only or metadata too?','Consumer concurrency — one at a time per mailbox?','Parse failure — retry count before DLQ?','Reparse from raw .eml after parser upgrade — procedure?']},{g:'Cloudflare',q:['Queues binding in wrangler.jsonc?','Queue vs Workflow vs Durable Object alarm for delay?','Cost of queue at personal volume?']},{g:'AWS parallel',q:['S3 → SNS → Lambda already async — equivalent?','Lambda retry vs SQS DLQ?','Step Functions for multi-stage parse?']}],
+        checkpoints:['Queue-based inbound deployed or spiked','Intentional parse error retried successfully','Diagram: before vs after queue refactor']},
+      { id:'adv-11', num:'11', title:'Backup, export & encryption', tier:'tier3', phase:'Tier 3 · Ops', upstream:'GUIDE.md open questions, mbox format',
+        tasks:['Implement mbox export: cron Worker streams messages to R2 export/','Test export opens in Thunderbird Import','Document weekly backup: D1 dump + R2 sync to second bucket','Research client-side encryption for bodies — threat model note','Plan reparsing all raw .eml after schema migration'],
+        concepts:['mbox = concatenated RFC 5322 messages with From_ lines','R2 cross-region or second account = backup','Cloudflare encrypts R2 at rest by default — not E2E','Export is also exit strategy if you leave the platform'],
+        questions:[{g:'Export',q:['Export per mailbox or whole domain?','Include attachments in mbox or separate zip?','Incremental export vs full snapshot?','GDPR-style delete — export then purge?']},{g:'Backup',q:['D1 backup via wrangler d1 export — automated how?','R2 lifecycle to Glacier-equivalent?','Restore drill — ever tested?','Backup encryption separate from at-rest?']},{g:'Encryption',q:['E2E encryption — which threat model justifies it?','Encrypt bodies in R2 with user-held key — UX cost?','Search on encrypted bodies — impossible without index tradeoff?']}],
+        checkpoints:['One mbox export downloaded and verified','Backup schedule written in Obsidian','E2E encrypt: explicit yes/no/defer']},
+      { id:'adv-12', num:'12', title:'JMAP as reference architecture', tier:'tier3', phase:'Tier 3 · Standards', upstream:'RFC 8620, RFC 8621, GUIDE.md',
+        tasks:['Skim RFC 8621 Introduction — design goals vs IMAP','Map JMAP Mailbox/Thread/Email objects to your schema','List 5 JMAP methods you would implement first','Note what JMAP solves that your REST API already covers','Optional: compare Fastmail/open-source JMAP servers'],
+        concepts:['JMAP = JSON over HTTP, batchable, push-capable','Email/query + Email/get pattern vs your list/read routes','Thread object vs your threads table','Not required to implement — best modern data model reference'],
+        questions:[{g:'Concepts',q:['JMAP vs IMAP — why JMAP exists?','Mailbox/query — equivalent to your inbox list API?','Email/set for mark-read/move — map to your PATCH routes?','JMAP push vs your SSE design?']},{g:'Mapping',q:['Your message_id ↔ JMAP Email id?','blobId for attachments ↔ your R2 keys?','Keywords (\\Seen) ↔ is_read + labels?','Gap list: what JMAP has that you lack?']},{g:'Strategy',q:['Implement JMAP API alongside REST — worth it?','Use JMAP spec to improve your schema only?','Which client supports JMAP natively?']}],
+        checkpoints:['Schema mapping table in Obsidian','5 JMAP methods mapped to your API','Decision: reference-only vs partial implement']}
+    ];
+
+    function renderSection(s) {
+      const tierBadge = { tier1: 'Agent stack', tier2: 'Product', tier3: 'Infrastructure' };
+      let qHtml = s.questions.map(g => `
+        <details class="question-group border border-slate-100 rounded-lg mb-2 bg-slate-50/50">
+          <summary class="px-4 py-2.5 text-sm font-medium text-slate-700 flex items-center justify-between">
+            ${g.g} <span class="text-xs text-slate-400">${g.q.length} questions</span>
+          </summary>
+          <ol class="px-4 pb-3 pt-1 list-decimal list-inside text-sm text-slate-600 space-y-2">${g.q.map(x=>`<li>${x}</li>`).join('')}</ol>
+        </details>`).join('');
+      let cpHtml = s.checkpoints.map((c,i)=>`
+        <label class="flex items-center gap-2 text-sm cursor-pointer">
+          <input type="checkbox" class="check-item rounded border-slate-300" data-id="${s.id}-cp-${i}" />
+          <span>${c}</span>
+        </label>`).join('');
+      return `
+      <article id="${s.id}" class="scroll-mt-8 bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden section-card" data-tier="${s.tier}">
+        <div class="px-6 py-4 border-b border-slate-100 bg-indigo-50">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-indigo-700">${s.num}</span>
+            <h3 class="text-lg font-semibold">${s.title}</h3>
+            <span class="px-2 py-0.5 text-xs bg-indigo-100 text-indigo-700 rounded">${tierBadge[s.tier]}</span>
+          </div>
+          <p class="text-xs text-slate-500 mt-1">${s.phase} · <span class="font-mono">${s.upstream}</span></p>
+        </div>
+        <div class="p-6 space-y-6">
+          <div>
+            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">What to do</h4>
+            <ol class="list-decimal list-inside text-sm text-slate-700 space-y-1">${s.tasks.map(t=>`<li>${t}</li>`).join('')}</ol>
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Concepts to notice</h4>
+            <ul class="text-sm text-slate-600 space-y-1">${s.concepts.map(c=>`<li class="flex gap-2"><span class="text-indigo-500">•</span>${c}</li>`).join('')}</ul>
+          </div>
+          <div class="bg-indigo-50 border border-indigo-100 rounded-lg px-4 py-3 text-sm text-indigo-900">
+            <strong>Answer in Obsidian:</strong> copy question groups below. Link back to section <code class="text-xs bg-white/50 px-1 rounded">${s.id}</code>.
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-2">Study questions</h4>
+            ${qHtml}
+          </div>
+          <div class="border-t border-slate-100 pt-4">
+            <h4 class="text-xs font-semibold uppercase text-slate-400 mb-3">Section checkpoint</h4>
+            <div class="space-y-2">${cpHtml}</div>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    document.getElementById('adv-sections').innerHTML = advSections.map(renderSection).join('');
+
+    // Theme toggle
+    const THEME_KEY = 'email-study-plan-theme';
+    function syncThemeIcons() {
+      const dark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('.theme-toggle').forEach(btn => {
+        btn.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden', !dark));
+        btn.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden', dark));
+        const label = btn.querySelector('.theme-label');
+        if (label) label.textContent = dark ? 'Light mode' : 'Dark mode';
+      });
+    }
+    function setTheme(dark) {
+      document.documentElement.classList.toggle('dark', dark);
+      localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+      syncThemeIcons();
+    }
+    document.querySelectorAll('.theme-toggle').forEach(btn => {
+      btn.addEventListener('click', () => setTheme(!document.documentElement.classList.contains('dark')));
+    });
+    syncThemeIcons();
+
+    // localStorage checkboxes
+    const STORAGE_KEY = 'email-study-plan-advanced';
+    function loadChecks() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+    }
+    function saveChecks(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function updateProgress() {
+      const all = document.querySelectorAll('.check-item');
+      const checked = document.querySelectorAll('.check-item:checked');
+      const pct = all.length ? Math.round(checked.length / all.length * 100) : 0;
+      document.getElementById('progress-bar').style.width = pct + '%';
+      document.getElementById('progress-text').textContent = pct + '%';
+    }
+    const state = loadChecks();
+    document.querySelectorAll('.check-item').forEach(el => {
+      if (state[el.dataset.id]) el.checked = true;
+      el.addEventListener('change', () => {
+        state[el.dataset.id] = el.checked;
+        saveChecks(state);
+        updateProgress();
+      });
+    });
+    updateProgress();
+
+    function expandAll(open) {
+      document.querySelectorAll('details').forEach(d => { d.open = open; });
+    }
+
+    // Tier filter
+    document.getElementById('tier-filter').addEventListener('change', e => {
+      const v = e.target.value;
+      document.querySelectorAll('[data-tier]').forEach(el => {
+        if (v === 'all') el.style.display = '';
+        else el.style.display = el.dataset.tier === v ? '' : 'none';
+      });
+    });
+
+    // Mobile menu
+    document.getElementById('menu-toggle').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+    document.querySelectorAll('#sidebar a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('sidebar').classList.remove('open'));
+    });
+
+    // Active nav on scroll
+    const sections = document.querySelectorAll('section[id], article[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+</body>
+</html>
